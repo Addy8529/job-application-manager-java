@@ -46,8 +46,6 @@ It solves a real-world problem by providing a structured way to monitor applicat
 
 ## Project Structure
 
-
-
 src/
 ├── Main.java
 ├── model/
@@ -60,7 +58,7 @@ src/
 └── ui/
 └── ConsoleUI.java
 
-````
+---
 
 ### Structure Explanation
 
@@ -96,23 +94,21 @@ The application uses enums to represent job states:
 ## How to Run
 
 1. Clone the repository:
-   ```bash
    git clone https://github.com/your-username/job-application-manager-java.git
-````
+
 
 2. Open the project in IntelliJ IDEA
 
 3. Run:
 
-   ```text
+   
    Main.java
-   ```
+   
 
 ---
 
 ## Example Menu
 
-```
 ==== Job Application Manager ====
 1. Add company
 2. Add job application
@@ -123,13 +119,13 @@ The application uses enums to represent job states:
 7. Delete application
 8. Show upcoming follow-ups
 0. Exit
-```
+
 
 ---
 
 ## Example Output
 
-```
+
 [1] Software Engineer Intern
 Company: Siemens
 Type: INTERNSHIP
@@ -137,7 +133,7 @@ Status: APPLIED
 Applied On: 2026-04-15
 Follow-Up: 2026-04-22
 Notes: Submitted via career portal
-```
+
 
 ---
 
