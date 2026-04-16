@@ -6,7 +6,7 @@ public enum ApplicationStatus {
     OFFER(2),
     REJECTED(3),
     ACCEPTED(4),
-    WITHDRAW(5);
+    WITHDRAWN(5);
     
     private ApplicationStatus(int level) {
         this.level = level;
