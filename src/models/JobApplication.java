@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class JobApplication {
 
     private final int id;
-    private final Company company;
+    private final int companyId;
     private final String roleTitle;
     private final JobType jobType;
     private ApplicationStatus status;
@@ -13,10 +13,10 @@ public class JobApplication {
     private LocalDate followUpDate;
     private String notes;
 
-    public JobApplication(int id, Company company, String roleTitle, JobType jobType,
+    public JobApplication(int id,int companyId, String roleTitle, JobType jobType,
             LocalDate dateApplied, LocalDate followUpDate, String notes) {
         this.id = id;
-        this.company = company;
+        this.companyId = companyId;
         this.roleTitle = roleTitle;
         this.jobType = jobType;
         this.status = ApplicationStatus.APPLIED;
@@ -32,9 +32,9 @@ public class JobApplication {
         
     }
     
-    public JobApplication(int id, Company company, String roleTitle, JobType jobType) {
+    public JobApplication(int id, int companyId, String roleTitle, JobType jobType) {
         this.id = id;
-        this.company = company;
+        this.companyId = companyId;
         this.roleTitle = roleTitle;
         this.jobType = jobType;
         this.dateApplied = LocalDate.now();
@@ -50,8 +50,8 @@ public class JobApplication {
     public String getRoleTitle(){
         return this.roleTitle;
     }
-    public Company getCompany() {
-        return this.company;
+    public int getCompanyId() {
+        return this.companyId;
     }
 
 
@@ -120,7 +120,7 @@ public class JobApplication {
     @Override
     public String toString() {
         return "[" + id + "] " + roleTitle +
-       " | Company: " + company.getName() +
+       " | CompanyId: " + companyId +
        " | Type: " + jobType +
        " | Status: " + status +
        " | Applied: " + dateApplied +
