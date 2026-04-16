@@ -14,10 +14,6 @@ public enum JobType {
         this.workingHours = workingHours;
     }
 
-    public void setWorkingHours(int workingHours) {
-        this.workingHours = workingHours;
-    }
-
     public int getWorkingHours(){
         return this.workingHours;
     }
