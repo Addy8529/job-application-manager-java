@@ -13,16 +13,22 @@ public class JobApplication {
     private LocalDate followUpDate;
     private String notes;
 
-    public JobApplication(int id, Company company, String roleTitle, JobType jobType, ApplicationStatus status,
+    public JobApplication(int id, Company company, String roleTitle, JobType jobType,
             LocalDate dateApplied, LocalDate followUpDate, String notes) {
         this.id = id;
         this.company = company;
         this.roleTitle = roleTitle;
         this.jobType = jobType;
-        this.status = status;
-        this.followUpDate = followUpDate;
+        this.status = ApplicationStatus.APPLIED;
+        
         this.notes = notes;
         this.dateApplied = dateApplied;
+
+        if (followUpDate != null && followUpDate.isBefore(dateApplied)) {
+            throw new IllegalArgumentException("Follow-up date cannot be before application date");
+        }else{
+            this.followUpDate = followUpDate;
+        }
         
     }
     
@@ -33,27 +39,29 @@ public class JobApplication {
         this.jobType = jobType;
         this.dateApplied = LocalDate.now();
         this.status = ApplicationStatus.APPLIED;
-        this.followUpDate = LocalDate.of(this.dateApplied.getYear(),this.dateApplied.getMonth(),this.dateApplied.getDayOfMonth()+7);
-        this.notes = "No notes.";
+        this.followUpDate = this.dateApplied.plusDays(7);
+        this.notes = (notes != null) ? notes : "No notes.";
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
-
+    public String getRoleTitle(){
+        return this.roleTitle;
+    }
     public Company getCompany() {
-        return company;
+        return this.company;
     }
 
 
     public JobType getJobType() {
-        return jobType;
+        return this.jobType;
     }
 
 
     public ApplicationStatus getStatus() {
-        return status;
+        return this.status;
     }
 
     public void setStatus(ApplicationStatus status) {
@@ -61,12 +69,12 @@ public class JobApplication {
     }
 
     public LocalDate getDateApplied() {
-        return dateApplied;
+        return this.dateApplied;
     }
 
 
     public LocalDate getFollowUpDate() {
-        return followUpDate;
+        return this.followUpDate;
     }
 
     public void setFollowUpDate(LocalDate followUpDate) {
@@ -74,20 +82,24 @@ public class JobApplication {
     }
 
     public String getNotes() {
-        return notes;
+        return this.notes;
     }
 
     public void setNotes(String notes) {
         this.notes = notes;
     }
 
+    public boolean hasFollowUpDue(){
+        return this.followUpDate != null && !this.followUpDate.isAfter(LocalDate.now());
+    }
+
+    
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((company == null) ? 0 : company.hashCode());
-        result = prime * result + ((roleTitle == null) ? 0 : roleTitle.hashCode());
-        result = prime * result + ((jobType == null) ? 0 : jobType.hashCode());
+        result = prime * result + id;
         return result;
     }
 
@@ -100,26 +112,20 @@ public class JobApplication {
         if (getClass() != obj.getClass())
             return false;
         JobApplication other = (JobApplication) obj;
-        if (company == null) {
-            if (other.company != null)
-                return false;
-        } else if (!company.equals(other.company))
-            return false;
-        if (roleTitle == null) {
-            if (other.roleTitle != null)
-                return false;
-        } else if (!roleTitle.equals(other.roleTitle))
-            return false;
-        if (jobType != other.jobType)
+        if (id != other.id)
             return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "JobApplication [id=" + id + ", company=" + company.getName() + ", roleTitle=" + roleTitle + ", jobType=" + jobType
-                + ", status=" + status + ", dateApplied=" + dateApplied + ", followUpDate=" + followUpDate + ", notes="
-                + notes + "]";
+        return "[" + id + "] " + roleTitle +
+       " | Company: " + company.getName() +
+       " | Type: " + jobType +
+       " | Status: " + status +
+       " | Applied: " + dateApplied +
+       " | Follow-up: " + followUpDate+
+       " | Notes: "+ notes;
     }
 
     
