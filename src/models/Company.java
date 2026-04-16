@@ -1,40 +1,48 @@
 package src.models;
 
 public class Company {
-
+    private final int id;
     private String name;
     private String description;
     private String url;
     private int numberOfEmployees;
 
 
-    public Company(final String name, final String description, final String url, final int numberOfEmployees) {
+    public Company(final int id,final String name, final String description, final String url, final int numberOfEmployees) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.url = url;
         this.numberOfEmployees = numberOfEmployees;
         }
 
-    public Company(final String name, final String description, final int numberOfEmployees) {
+    public Company(final int id, final String name, final String description, final int numberOfEmployees) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.numberOfEmployees = numberOfEmployees;
         }
     
-    public Company(final String name, final String description) {
+    public Company(final int id, final String name, final String description) {
+        this.id = id;
         this.name = name;
         this.description = description;
     }
 
-    public Company(final String name, final int numberOfEmployees) {
+    public Company(final int id, final String name, final int numberOfEmployees) {
+        this.id = id;
         this.name = name;
         this.numberOfEmployees = numberOfEmployees;
     }
 
-    public Company(final String name) {
+    public Company(final int id, final String name) {
+        this.id = id;
         this.name = name;
     }
 
+    public int getId(){
+        return this.id;
+    }
     public String getName() {
         return name;
     }
@@ -69,40 +77,35 @@ public class Company {
 
     @Override
     public String toString() {
-        return "Company [name=" + name + ", description=" + description + ", url=" + url + ", numberOfEmployees="
-                + numberOfEmployees + "]";
+        return "ID: "+this.getId() + 
+        " | Name: "+this.getName()+
+        " | Url: "+this.getUrl()+
+        " | Description: "+this.getDescription();
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((url == null) ? 0 : url.hashCode());
+        result = prime * result + id;
         return result;
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final Company other = (Company) obj;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        if (url == null) {
-            if (other.url != null)
-                return false;
-        } else if (!url.equals(other.url))
+        Company other = (Company) obj;
+        if (id != other.id)
             return false;
         return true;
     }
+
+    
 
    
 
