@@ -15,8 +15,19 @@ public class JobApplication {
 
     public JobApplication(int id,int companyId, String roleTitle, JobType jobType, ApplicationStatus status,
             LocalDate dateApplied, LocalDate followUpDate, String notes) {
-        this.id = id;
-        this.companyId = companyId;
+        
+            if(id <0){
+                throw new IllegalArgumentException("The argument id cannot be less than 0.");
+            }else{
+                this.id = id;
+            }
+            
+            if(companyId <0){
+                throw new IllegalArgumentException("The argument companyId cannot be less than 0.");
+            }else{
+                this.companyId = companyId;
+            }
+    
         if (isRoleTitleValid(roleTitle)){
             this.roleTitle = roleTitle;
         }else{
@@ -57,8 +68,17 @@ public class JobApplication {
     }
     
     public JobApplication(int id, int companyId, String roleTitle, JobType jobType) {
-        this.id = id;
-        this.companyId = companyId;
+        
+        if(id <0){
+                throw new IllegalArgumentException("The argument id cannot be less than 0.");
+            }else{
+                this.id = id;
+            }
+        if(companyId <0){
+                throw new IllegalArgumentException("The argument companyId cannot be less than 0.");
+            }else{
+                this.companyId = companyId;
+            }
 
         if (isRoleTitleValid(roleTitle)){
             this.roleTitle = roleTitle;
