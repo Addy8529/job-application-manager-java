@@ -20,9 +20,13 @@ public class JobApplication {
         if (isRoleTitleValid(roleTitle)){
             this.roleTitle = roleTitle;
         }else{
-            throw new IllegalArgumentException("The Role Title should not be null or blank.");
+            throw new IllegalArgumentException("The argument  roleTitle should not be null or blank.");
         }
-        this.jobType = jobType;
+        if(jobType == null){
+            throw new IllegalArgumentException("The argument JobType cannot be null.");
+        }else{
+            this.jobType = jobType;
+        }
         this.status = ApplicationStatus.APPLIED;
         
         this.notes = notes;
@@ -43,9 +47,14 @@ public class JobApplication {
         if (isRoleTitleValid(roleTitle)){
             this.roleTitle = roleTitle;
         }else{
-            throw new IllegalArgumentException("The Role Title should not be null or blank.");
+            throw new IllegalArgumentException("The argument  roleTitle should not be null or blank.");
         }
-        this.jobType = jobType;
+
+        if(jobType == null){
+            throw new IllegalArgumentException("The argument JobType cannot be null.");
+        }else{
+            this.jobType = jobType;
+        }
         this.dateApplied = LocalDate.now();
         this.status = ApplicationStatus.APPLIED;
         this.followUpDate = this.dateApplied.plusDays(7);
