@@ -13,7 +13,7 @@ public class JobApplication {
     private LocalDate followUpDate;
     private String notes;
 
-    public JobApplication(int id,int companyId, String roleTitle, JobType jobType,
+    public JobApplication(int id,int companyId, String roleTitle, JobType jobType, ApplicationStatus status,
             LocalDate dateApplied, LocalDate followUpDate, String notes) {
         this.id = id;
         this.companyId = companyId;
@@ -27,7 +27,7 @@ public class JobApplication {
         }else{
             this.jobType = jobType;
         }
-        this.status = ApplicationStatus.APPLIED;
+        this.status = status;
         
         this.notes = (notes == null || notes.isBlank()) ? "No notes." : notes;
 
