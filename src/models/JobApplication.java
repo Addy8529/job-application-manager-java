@@ -30,7 +30,13 @@ public class JobApplication {
         this.status = ApplicationStatus.APPLIED;
         
         this.notes = notes;
-        this.dateApplied = dateApplied;
+
+        if( dateApplied == null){
+            throw new IllegalArgumentException("The argument dateApplied should not be null.");
+        }else{
+            this.dateApplied = dateApplied;
+        }
+        
 
         if (followUpDate != null && followUpDate.isBefore(dateApplied)) {
             throw new IllegalArgumentException("Follow-up date cannot be before application date");
