@@ -29,7 +29,7 @@ public class JobApplication {
         }
         this.status = ApplicationStatus.APPLIED;
         
-        this.notes = notes;
+        this.notes = (notes == null || notes.isBlank()) ? "No notes." : notes;
 
         if( dateApplied == null){
             throw new IllegalArgumentException("The argument dateApplied should not be null.");
