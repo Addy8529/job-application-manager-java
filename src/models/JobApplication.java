@@ -27,7 +27,13 @@ public class JobApplication {
         }else{
             this.jobType = jobType;
         }
-        this.status = status;
+        
+        if(status ==null ){
+            this.status = ApplicationStatus.APPLIED;
+        }else{
+            this.status = status;
+        }
+        
         
         this.notes = (notes == null || notes.isBlank()) ? "No notes." : notes;
 
