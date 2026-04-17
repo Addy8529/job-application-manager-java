@@ -16,81 +16,68 @@ public class JobApplication {
     public JobApplication(int id,int companyId, String roleTitle, JobType jobType, ApplicationStatus status,
             LocalDate dateApplied, LocalDate followUpDate, String notes) {
         
-            if(id <0){
-                throw new IllegalArgumentException("The argument id cannot be less than 0.");
-            }else{
-                this.id = id;
+            if ( id < 0 ) {
+                throw new IllegalArgumentException("id cannot be negative.");
+            }
+                
+            if ( companyId < 0 ) {
+                throw new IllegalArgumentException("companyId cannot be negative.");
             }
             
-            if(companyId <0){
-                throw new IllegalArgumentException("The argument companyId cannot be less than 0.");
-            }else{
-                this.companyId = companyId;
+            if ( !isRoleTitleValid(roleTitle) ) {
+                throw new IllegalArgumentException("roleTitle cannot be null or blank.");
             }
-    
-        if (isRoleTitleValid(roleTitle)){
-            this.roleTitle = roleTitle;
-        }else{
-            throw new IllegalArgumentException("The argument  roleTitle should not be null or blank.");
-        }
-        if(jobType == null){
-            throw new IllegalArgumentException("The argument JobType cannot be null.");
-        }else{
-            this.jobType = jobType;
-        }
-        
-        if(status ==null ){
-            this.status = ApplicationStatus.APPLIED;
-        }else{
-            this.status = status;
-        }
-        
-        
-        this.notes = (notes == null || notes.isBlank()) ? "No notes." : notes;
+            
+            if ( jobType == null ) {
+                throw new IllegalArgumentException("JobType cannot be null.");
+            }
+            
+            if ( dateApplied == null ) {
+                throw new IllegalArgumentException("dateApplied cannot be null.");
+            }
 
-        if( dateApplied == null){
-            throw new IllegalArgumentException("The argument dateApplied should not be null.");
-        }else{
-            this.dateApplied = dateApplied;
-        }
-
-        if (followUpDate != null ) {
-            if(followUpDate.isBefore(dateApplied)){
+            LocalDate resolvedFollowUpDate = ( followUpDate != null ) 
+                ? followUpDate 
+                : dateApplied.plusDays(7); 
+            
+            if ( resolvedFollowUpDate.isBefore(dateApplied) ) {
                 throw new IllegalArgumentException("Follow-up date cannot be before application date");
-            }else{
-                this.followUpDate = followUpDate;
             }
-            
-        }else{
-            this.followUpDate = LocalDate.now().plusDays(7);
-        }
-        
+                
+            this.id = id;
+            this.companyId = companyId;
+            this.roleTitle = roleTitle.trim();
+            this.jobType = jobType;
+            this.status = ( status == null ) ? ApplicationStatus.APPLIED : status;
+            this.dateApplied = dateApplied;
+            this.followUpDate = resolvedFollowUpDate;
+            this.notes = (notes == null || notes.isBlank()) ? "No notes." : notes.trim();
+
+             
     }
     
     public JobApplication(int id, int companyId, String roleTitle, JobType jobType) {
         
-        if(id <0){
-                throw new IllegalArgumentException("The argument id cannot be less than 0.");
-            }else{
-                this.id = id;
-            }
-        if(companyId <0){
-                throw new IllegalArgumentException("The argument companyId cannot be less than 0.");
-            }else{
-                this.companyId = companyId;
-            }
-
-        if (isRoleTitleValid(roleTitle)){
-            this.roleTitle = roleTitle;
-        }else{
-            throw new IllegalArgumentException("The argument  roleTitle should not be null or blank.");
+        if ( id < 0 ) {
+            throw new IllegalArgumentException("id cannot be negative.");
         }
 
-        if(jobType == null){
-            throw new IllegalArgumentException("The argument JobType cannot be null.");
-        }else{
-            this.jobType = jobType;
+        if ( companyId < 0 ) {
+            throw new IllegalArgumentException("companyId cannot be negative.");
         }
+
+        if ( !isRoleTitleValid(roleTitle) ) {
+            throw new IllegalArgumentException("roleTitle cannot be null or blank.");
+        }
+
+        if ( jobType == null ) {
+            throw new IllegalArgumentException("JobType cannot be null.");
+                }
+
+        this.id = id;
+        this.companyId = companyId;
+        this.roleTitle = roleTitle.trim();
+        this.jobType = jobType;
         this.dateApplied = LocalDate.now();
         this.status = ApplicationStatus.APPLIED;
         this.followUpDate = this.dateApplied.plusDays(7);
@@ -98,13 +85,7 @@ public class JobApplication {
     }
 
     private boolean isRoleTitleValid(String roleTitle){
-
-        if(roleTitle == null || roleTitle.isBlank()){
-            return false;
-        }else{
-           return true; 
-        }
-        
+        return ( roleTitle == null || roleTitle.trim().isBlank() );  
     }
 
     public int getId() {
