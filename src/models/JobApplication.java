@@ -36,12 +36,16 @@ public class JobApplication {
         }else{
             this.dateApplied = dateApplied;
         }
-        
 
-        if (followUpDate != null && followUpDate.isBefore(dateApplied)) {
-            throw new IllegalArgumentException("Follow-up date cannot be before application date");
+        if (followUpDate != null ) {
+            if(followUpDate.isBefore(dateApplied)){
+                throw new IllegalArgumentException("Follow-up date cannot be before application date");
+            }else{
+                this.followUpDate = followUpDate;
+            }
+            
         }else{
-            this.followUpDate = followUpDate;
+            this.followUpDate = LocalDate.now().plusDays(7);
         }
         
     }
