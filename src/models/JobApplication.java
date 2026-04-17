@@ -85,7 +85,7 @@ public class JobApplication {
     }
 
     private boolean isRoleTitleValid(String roleTitle){
-        return ( roleTitle == null || roleTitle.trim().isBlank() );  
+        return ( roleTitle != null && !roleTitle.trim().isBlank() );  
     }
 
     public int getId() {
