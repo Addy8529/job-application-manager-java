@@ -17,7 +17,11 @@ public class JobApplication {
             LocalDate dateApplied, LocalDate followUpDate, String notes) {
         this.id = id;
         this.companyId = companyId;
-        this.roleTitle = roleTitle;
+        if (isRoleTitleValid(roleTitle)){
+            this.roleTitle = roleTitle;
+        }else{
+            throw new IllegalArgumentException("The Role Title should not be null or blank.");
+        }
         this.jobType = jobType;
         this.status = ApplicationStatus.APPLIED;
         
@@ -35,12 +39,27 @@ public class JobApplication {
     public JobApplication(int id, int companyId, String roleTitle, JobType jobType) {
         this.id = id;
         this.companyId = companyId;
-        this.roleTitle = roleTitle;
+
+        if (isRoleTitleValid(roleTitle)){
+            this.roleTitle = roleTitle;
+        }else{
+            throw new IllegalArgumentException("The Role Title should not be null or blank.");
+        }
         this.jobType = jobType;
         this.dateApplied = LocalDate.now();
         this.status = ApplicationStatus.APPLIED;
         this.followUpDate = this.dateApplied.plusDays(7);
-        this.notes = (notes != null) ? notes : "No notes.";
+        this.notes = "No notes.";
+    }
+
+    private boolean isRoleTitleValid(String roleTitle){
+
+        if(roleTitle == null || roleTitle.isBlank()){
+            return false;
+        }else{
+           return true; 
+        }
+        
     }
 
     public int getId() {
@@ -129,9 +148,5 @@ public class JobApplication {
     }
 
     
-
-    
-    
-
 
 }
