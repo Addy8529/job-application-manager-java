@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.naming.NameNotFoundException;
-
 import java.net.URI;
 import src.models.ApplicationStatus;
 import src.models.Company;
@@ -210,7 +208,7 @@ public class ApplicationService {
         if ( newStatus == null ) {
             throw new IllegalArgumentException("status cannot be null." );
         }
-        
+
         JobApplication app = findApplicationById(appId);
         int index = this.applications.indexOf(app);
         app.setStatus(newStatus);
