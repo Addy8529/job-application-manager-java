@@ -25,19 +25,20 @@ public class ApplicationService {
         this.nextApplicationId = 0;
     }
 
-    public Company addCompany( String name, String description, URI url, int numberOfEmployees ){
+    public Company addCompany( String name, String description, String url, int numberOfEmployees ){
         
         if ( nextCompanyId < 0 ) {
             throw new InternalError("nextCompanyId was negative." );
         }
 
         try{
-            Company company = new Company(nextCompanyId, name, description, url, numberOfEmployees);
+            URI uri = new URI(url);
+            Company company = new Company(nextCompanyId, name, description, uri, numberOfEmployees);
             
             nextCompanyId++;
             this.companies.add(company);
             return company;
-        }catch (IllegalArgumentException e){
+        }catch (Exception e){
             System.out.println("Caugth Exception: " + e.getMessage() );
         }
 
