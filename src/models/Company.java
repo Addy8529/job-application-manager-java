@@ -1,14 +1,28 @@
 package src.models;
 
+import java.net.URI;
+
 public class Company {
     private final int id;
     private String name;
     private String description;
-    private String url;
+    private URI url;
     private int numberOfEmployees;
 
 
-    public Company(final int id,final String name, final String description, final String url, final int numberOfEmployees) {
+    public Company(int id, String name, String description, URI url, int numberOfEmployees) {
+
+        if ( id < 0 ) {
+            throw  new IllegalArgumentException("id cannot be negative." );
+        }
+
+        if ( name == null || name.trim().isBlank() ){
+            throw new IllegalArgumentException("Name cannot be null or blank." );
+        }
+
+        if (numberOfEmployees < 0 ) {
+            throw new IllegalArgumentException("number of employees cannot be negative." );
+        }
         this.id = id;
         this.name = name;
         this.description = description;
@@ -16,30 +30,7 @@ public class Company {
         this.numberOfEmployees = numberOfEmployees;
         }
 
-    public Company(final int id, final String name, final String description, final int numberOfEmployees) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.numberOfEmployees = numberOfEmployees;
-        }
     
-    public Company(final int id, final String name, final String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-    }
-
-    public Company(final int id, final String name, final int numberOfEmployees) {
-        this.id = id;
-        this.name = name;
-        this.numberOfEmployees = numberOfEmployees;
-    }
-
-    public Company(final int id, final String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     public int getId(){
         return this.id;
     }
@@ -59,11 +50,11 @@ public class Company {
         this.description = description;
     }
 
-    public String getUrl() {
+    public URI getUrl() {
         return url;
     }
 
-    public void setUrl(final String url) {
+    public void setUrl(URI url) {
         this.url = url;
     }
 
