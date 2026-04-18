@@ -188,7 +188,7 @@ public class ApplicationService {
     }
 
     public void deleteCompanyById(int id){
-        
+
         if ( id < 0 ) {
             throw new IllegalArgumentException("id cannot be negative." );
         }
@@ -198,6 +198,23 @@ public class ApplicationService {
         }
 
         this.companies.remove(findCompanyById(id));
+
+    }
+
+    public void updateApplicationStatus(int appId, ApplicationStatus newStatus ){
+        
+        if ( appId < 0 ){
+            throw new IllegalArgumentException("id cannot be negative." );
+        }
+
+        if ( newStatus == null ) {
+            throw new IllegalArgumentException("status cannot be null." );
+        }
+        
+        JobApplication app = findApplicationById(appId);
+        int index = this.applications.indexOf(app);
+        app.setStatus(newStatus);
+        this.applications.set(index, app);
 
     }
 
