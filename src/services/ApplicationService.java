@@ -183,6 +183,10 @@ public class ApplicationService {
         return list;
     }
 
+    public void deleteApplication(int id){
+        this.applications.remove(findApplicationById(id));
+    }
+    
     @Override
     public String toString() {
         String result = "";
