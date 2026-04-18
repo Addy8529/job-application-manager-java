@@ -1,14 +1,14 @@
 package src.services;
 
-import java.io.NotActiveException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
-
+import java.net.URI;
 import src.models.ApplicationStatus;
 import src.models.Company;
 import src.models.JobApplication;
 import src.models.JobType;
+
 
 public class ApplicationService {
     
@@ -24,22 +24,23 @@ public class ApplicationService {
         this.nextApplicationId = 0;
     }
 
-    public Company addCompany(String name, String description, String url, int numberOfEmployees ){
-        Company result;
+    public Company addCompany( String name, String description, URI url, int numberOfEmployees ){
         
-        if( name == null || name.isBlank() ){
-            throw new IllegalArgumentException("Company name must not be null or blank.");
-        }else{
-            for(Company company: companies){
-                if(company.getName().equalsIgnoreCase(name.trim())){
-                    throw new IllegalArgumentException("Company name already exists.");
-                }
-            }
-            result = new Company(nextCompanyId, name.trim(), description, url, numberOfEmployees);
-            nextCompanyId++;
-            companies.add(result);
+        if ( nextCompanyId < 0 ) {
+            throw new InternalError("nextCompanyId was negative." );
         }
-        return result;
+
+        try{
+            Company company = new Company(nextCompanyId, name, description, url, numberOfEmployees);
+            
+            nextCompanyId++;
+            this.companies.add(company);
+            return company;
+        }catch (IllegalArgumentException e){
+            System.out.println("Caugth Exception: " + e.getMessage() );
+        }
+
+        return null;
     }
     
 
@@ -65,7 +66,7 @@ public class ApplicationService {
 
                 nextApplicationId++;
 
-                return new JobApplication(
+                JobApplication application = new JobApplication(
                     id,
                     companyId, 
                     roleTitle,
@@ -75,7 +76,9 @@ public class ApplicationService {
                     followUpDate, 
                     notes
                 );
+                this.applications.add(application);
 
+                return application;
             }catch (IllegalArgumentException e ) {
                 System.out.println(e.getMessage());
             }
