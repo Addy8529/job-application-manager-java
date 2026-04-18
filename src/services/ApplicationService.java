@@ -3,6 +3,9 @@ package src.services;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import javax.naming.NameNotFoundException;
+
 import java.net.URI;
 import src.models.ApplicationStatus;
 import src.models.Company;
@@ -115,6 +118,20 @@ public class ApplicationService {
 
             if( company.getId() == id){
                 return company;
+            }
+        }
+        return null;
+    }
+
+    public JobApplication findApplicationById(int id){
+        
+        if ( id < 0 ) {
+            throw new IllegalArgumentException("id cannot be negative." );
+        }
+
+        for ( JobApplication app : applications ) {
+            if ( id == app.getId() ) {
+                return app;
             }
         }
         return null;
