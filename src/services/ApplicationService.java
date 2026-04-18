@@ -186,7 +186,21 @@ public class ApplicationService {
     public void deleteApplication(int id){
         this.applications.remove(findApplicationById(id));
     }
-    
+
+    public void deleteCompanyById(int id){
+        
+        if ( id < 0 ) {
+            throw new IllegalArgumentException("id cannot be negative." );
+        }
+
+        for ( JobApplication app : listApplicationsByCompanyId(id)) {
+            deleteApplication(app.getId());
+        }
+
+        this.companies.remove(findCompanyById(id));
+
+    }
+
     @Override
     public String toString() {
         String result = "";
