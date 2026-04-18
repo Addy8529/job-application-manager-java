@@ -95,15 +95,14 @@ public class JobApplication {
     public String getRoleTitle(){
         return this.roleTitle;
     }
+    
     public int getCompanyId() {
         return this.companyId;
     }
 
-
     public JobType getJobType() {
         return this.jobType;
     }
-
 
     public ApplicationStatus getStatus() {
         return this.status;
@@ -116,7 +115,6 @@ public class JobApplication {
     public LocalDate getDateApplied() {
         return this.dateApplied;
     }
-
 
     public LocalDate getFollowUpDate() {
         return this.followUpDate;
@@ -137,8 +135,6 @@ public class JobApplication {
     public boolean hasFollowUpDue(){
         return this.followUpDate != null && !this.followUpDate.isAfter(LocalDate.now());
     }
-
-    
 
     @Override
     public int hashCode() {
