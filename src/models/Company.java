@@ -20,6 +20,9 @@ public class Company {
             throw new IllegalArgumentException("Name cannot be null or blank." );
         }
 
+        if ( !isValidURL(url) ) {
+            throw new IllegalArgumentException("url cannot be null." );
+        } 
         if (numberOfEmployees < 0 ) {
             throw new IllegalArgumentException("number of employees cannot be negative." );
         }
@@ -30,7 +33,14 @@ public class Company {
         this.numberOfEmployees = numberOfEmployees;
         }
 
-    
+    private static boolean isValidURL(URI url){
+        return  ( url != null && 
+            url.getScheme() != null && 
+            !url.getScheme().isBlank() && 
+            url.getAuthority() != null && 
+            !url.getAuthority().isBlank());
+        
+    }
     public int getId(){
         return this.id;
     }
@@ -97,8 +107,6 @@ public class Company {
     }
 
     
-
-   
 
     
     
