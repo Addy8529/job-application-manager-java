@@ -1,9 +1,11 @@
 package src.services;
 
+import java.io.NotActiveException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import src.models.ApplicationStatus;
 import src.models.Company;
 import src.models.JobApplication;
 import src.models.JobType;
@@ -23,7 +25,7 @@ public class ApplicationService {
     }
 
     public Company addCompany(String name, String description, String url, int numberOfEmployees ){
-        Company result= null;
+        Company result;
         
         if( name == null || name.isBlank() ){
             throw new IllegalArgumentException("Company name must not be null or blank.");
@@ -39,23 +41,48 @@ public class ApplicationService {
         }
         return result;
     }
+    
 
-    public JobApplication addApplication(int companyId, String roleTitle, JobType type, LocalDate dateApplied, LocalDate followUpDate, String notes ){
-        
-            if ( this.findCompanyById(companyId).equals(null)){
-                throw new IllegalArgumentException("No company associated with the given company id.");
-            }else{
-                String normalizedRoleTitel = roleTitle.trim();
-                if( normalizedRoleTitel == null || normalizedRoleTitel.isBlank() ){
-                    throw new IllegalArgumentException("Role Title cannot be null or blank.");
-                }else{
-                    JobApplication app = new JobApplication(nextApplicationId, companyId, roleTitle, type, dateApplied, followUpDate,notes);
-                    nextApplicationId++;
-                    this.applications.add(app);
-                    return app;
+    public JobApplication addApplication(
+        int companyId, 
+        String roleTitle, 
+        JobType jobType, 
+        ApplicationStatus status, 
+        LocalDate dateApplied, 
+        LocalDate followUpDate, 
+        String notes){
+            
+            try{
+                int id = nextApplicationId;
+
+                if ( id < 0 ){
+                    throw new InternalError("nextApplication id was negative.");
                 }
+
+                if ( companyId < 0 || this.findCompanyById(companyId) == null  ) {
+                    throw new IllegalArgumentException("companyId is negative or does not exist." );
+                }
+
+                nextApplicationId++;
+
+                return new JobApplication(
+                    id,
+                    companyId, 
+                    roleTitle,
+                    jobType, 
+                    status, 
+                    dateApplied, 
+                    followUpDate, 
+                    notes
+                );
+
+            }catch (IllegalArgumentException e ) {
+                System.out.println(e.getMessage());
             }
-        
+
+
+
+        return null;
     }
 
     public ArrayList<Company> getCompanies(){
