@@ -95,7 +95,7 @@ public class JobApplication {
     public String getRoleTitle(){
         return this.roleTitle;
     }
-    
+
     public int getCompanyId() {
         return this.companyId;
     }
