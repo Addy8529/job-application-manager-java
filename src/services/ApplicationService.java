@@ -153,13 +153,30 @@ public class ApplicationService {
 
     public ArrayList<JobApplication> listApplicationsByCompanyId(int companyId){
         ArrayList<JobApplication> list =  new ArrayList<>();
-        
+
         if ( companyId < 0){
             throw new IllegalArgumentException("id cannot be negative." );
         }
 
         for ( JobApplication app : this.applications ) {
             if ( app.getCompanyId() == companyId ){
+                list.add(app);
+            }
+        }
+        return list;
+    }
+
+    public ArrayList<JobApplication> listApplicationsByStatus(ApplicationStatus status){
+
+        if ( status == null ) {
+            throw new IllegalArgumentException("status cannot be null." );
+        }
+
+        ArrayList<JobApplication> list = new ArrayList<>();
+
+        for ( JobApplication app : this.applications ) {
+
+            if ( app.getStatus().equals(status) ){
                 list.add(app);
             }
         }
