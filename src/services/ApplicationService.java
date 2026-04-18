@@ -93,7 +93,7 @@ public class ApplicationService {
     }
 
     public ArrayList<JobApplication> getApplications(){
-        return this.applications;
+        return new ArrayList<>(this.applications);
     }
     
     public Company findCompany(String name){
