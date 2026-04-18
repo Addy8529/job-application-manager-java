@@ -151,6 +151,21 @@ public class ApplicationService {
         return result;
     }
 
+    public ArrayList<JobApplication> listApplicationsByCompanyId(int companyId){
+        ArrayList<JobApplication> list =  new ArrayList<>();
+        
+        if ( companyId < 0){
+            throw new IllegalArgumentException("id cannot be negative." );
+        }
+
+        for ( JobApplication app : this.applications ) {
+            if ( app.getCompanyId() == companyId ){
+                list.add(app);
+            }
+        }
+        return list;
+    }
+
     @Override
     public String toString() {
         String result = "";
