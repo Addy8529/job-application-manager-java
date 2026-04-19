@@ -42,9 +42,6 @@ public class ConsoleUI {
                                 5: WITHDRAWN    
                             """ );
         map.put("dateApplied", "Enter application date like YYYY-MM-DD: " );
-        map.put("year", "Enter year: ");
-        map.put("month", "Enter Month ");
-        map.put("day", "Enter day: ");
         map.put("followUpDate", "Enter followup date like YYYY-MM-DD: " );
         map.put("notes", "Enter notes: ");
 
@@ -160,7 +157,7 @@ public class ConsoleUI {
 
     private void addApplicationHandler(){
         this.service.addApplication(
-            getInputInt("companyID"), 
+            getInputInt("CompanyId"), 
             getInput("roleTitle"),
             mapWorkingHoursToJobType(getInputInt("jobType")),
             mapLevelToApplicationStatus(getInputInt("status")),
