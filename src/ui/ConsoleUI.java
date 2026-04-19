@@ -19,6 +19,21 @@ public class ConsoleUI {
         map.put("description", "Enter description: ");
         map.put("url", "Enter url: ");
         map.put("n","Enter number of employees: ");
+        map.put("CompanyId","Enter company id: ");
+        map.put("roleTitle", "Enter job title: ");
+        map.put("jobType", """
+                                Enter job type:
+                                1: Full time
+                                2: Part time
+                                3: Internship
+                                4: Working Student             
+                                """
+            );
+        map.put("status: ", "Enter application status: " );
+        map.put("dateApplied", "Enter application date:b " );
+        map.put("followUpDate", "Enter followup date: " );
+        map.put("notes", "Enter notes: ");
+
     }
     
     public void setService(ApplicationService service) {
@@ -52,6 +67,7 @@ public class ConsoleUI {
         String input = this.scanner.next();
         return input;
     }
+
 
     private Company addCompanyHandler() {
         
@@ -98,6 +114,18 @@ public class ConsoleUI {
     private void deleteCompanyHandler(){
         System.out.print("Enter company id: ");
         service.deleteCompanyById(this.scanner.nextInt());
+    }
+
+    private void addApplicationHandler(){
+        this.service.addApplication(
+            getInput("companyID"), 
+            getInput("roleTitle"),
+            getInput("jobType"),
+            getInput("status"),
+            getInput("dateApplied"),
+            getInput("followUpDate"),
+            getInput("notes")
+        );
     }
 
 }
