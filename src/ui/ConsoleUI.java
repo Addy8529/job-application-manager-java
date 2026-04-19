@@ -73,6 +73,7 @@ public class ConsoleUI {
                            13: Exit.
                            """);
     }
+    
     private String getInput(String argument){
         System.out.print(map.get(argument));
         String input = this.scanner.next();
@@ -82,6 +83,30 @@ public class ConsoleUI {
     private int getInputInt(String argument){
         System.out.print(map.get(argument));
         return this.scanner.nextInt();
+    }
+    
+    private JobType getJobType( String argument ){
+
+        int level = getInputInt(argument);
+        for (JobType type : JobType.values()){
+            if ( type.getWorkingHours() == level ) return type;
+        }
+        return null;
+    }
+
+    private ApplicationStatus getApplicationStatus( String argument ){
+        int workingHours = getInputInt(argument);
+        for ( ApplicationStatus status : ApplicationStatus.values() ){
+            if ( status.getLevel() == workingHours ) {
+                return status;
+            }
+        }
+        return null;
+    }
+
+    private LocalDate getInputDate(String argument){
+        System.out.println(map.get(argument));
+        return LocalDate.parse(this.scanner.next());
     }
 
     private Company addCompanyHandler() {
@@ -116,7 +141,7 @@ public class ConsoleUI {
 
     }
 
-    public void exit(){
+    private  void exit(){
         try {
             scanner.close();
             System.out.println("Exiting Application ...");
@@ -132,29 +157,11 @@ public class ConsoleUI {
         service.deleteCompanyById(this.scanner.nextInt());
     }
 
-    private JobType getJobType( String argument ){
-
-        int level = getInputInt(argument);
-        for (JobType type : JobType.values()){
-            if ( type.getWorkingHours() == level ) return type;
-        }
-        return null;
-    }
+    
  
-    private ApplicationStatus getApplicationStatus( String argument ){
-        int workingHours = getInputInt(argument);
-        for ( ApplicationStatus status : ApplicationStatus.values() ){
-            if ( status.getLevel() == workingHours ) {
-                return status;
-            }
-        }
-        return null;
-    }
+    
 
-    private LocalDate getInputDate(String text){
-        System.out.println(map.get(text));
-        return LocalDate.parse(this.scanner.next());
-    }
+    
 
     private void addApplicationHandler(){
 
