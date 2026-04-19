@@ -74,7 +74,7 @@ public class ConsoleUI {
                            """);
     }
     private String getInput(String argument){
-        System.out.print(argument);
+        System.out.print(map.get(argument));
         String input = this.scanner.next();
         return input;
     }
@@ -88,10 +88,10 @@ public class ConsoleUI {
         
         try {
             return this.service.addCompany(
-                getInput(map.get("Cname")),
-                getInput(map.get("description")),
-                getInput(map.get("url")),
-                Integer.parseInt(getInput(map.get("n"))));
+                getInput("Cname"),
+                getInput("description"),
+                getInput("url"),
+                getInputInt("n"));
            
         } catch (NumberFormatException e) {
             System.out.println("Caught Exception: " + e.getMessage());
@@ -132,18 +132,18 @@ public class ConsoleUI {
         service.deleteCompanyById(this.scanner.nextInt());
     }
 
-    private JobType mapWorkingHoursToJobType(int workingHours){
+    private JobType getJobType(String argument ){
 
         for (JobType type : JobType.values()){
-            if ( type.getWorkingHours() == workingHours ) return type;
+            if ( type.getWorkingHours() == getInputInt(argument) ) return type;
         }
         return null;
     }
  
-    private ApplicationStatus mapLevelToApplicationStatus(int level){
+    private ApplicationStatus getApplicationStatus(String argument){
 
         for ( ApplicationStatus status : ApplicationStatus.values() ){
-            if ( status.getLevel() == level ) {
+            if ( status.getLevel() == getInputInt(argument) ) {
                 return status;
             }
         }
@@ -156,11 +156,11 @@ public class ConsoleUI {
     }
 
     private void addApplicationHandler(){
-        this.service.addApplication(
-            getInputInt("CompanyId"), 
+
+        this.service.addApplication(getInputInt("CompanyId"), 
             getInput("roleTitle"),
-            mapWorkingHoursToJobType(getInputInt("jobType")),
-            mapLevelToApplicationStatus(getInputInt("status")),
+            getJobType("jobType"),
+            getApplicationStatus("status"),
             getInputDate(getInput("dateApplied")),
             getInputDate("followUpDate"),
             getInput("notes")
