@@ -68,7 +68,11 @@ public class ConsoleUI {
         return input;
     }
 
-
+    private int getInputInt(String argument){
+        System.out.print(argument);
+        return this.scanner.nextInt();
+    }
+    
     private Company addCompanyHandler() {
         
         try {
