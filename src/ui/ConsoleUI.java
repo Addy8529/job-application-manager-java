@@ -2,6 +2,7 @@ package src.ui;
 import java.util.HashMap;
 import java.util.Scanner;
 import src.models.Company;
+import src.models.JobType;
 import src.services.ApplicationService;
 
 public class ConsoleUI {
@@ -22,11 +23,11 @@ public class ConsoleUI {
         map.put("CompanyId","Enter company id: ");
         map.put("roleTitle", "Enter job title: ");
         map.put("jobType", """
-                                Enter job type:
-                                1: Full time
-                                2: Part time
-                                3: Internship
-                                4: Working Student             
+                                Enter working hours:
+                                120: Full time
+                                80: Part time
+                                100: Internship
+                                40: Working Student             
                                 """
             );
         map.put("status: ", "Enter application status: " );
@@ -120,11 +121,18 @@ public class ConsoleUI {
         service.deleteCompanyById(this.scanner.nextInt());
     }
 
+    private JobType mapWorkingHoursToJobType(int workingHours){
+
+        for (JobType type : JobType.values()){
+            if ( type.getWorkingHours() == workingHours ) return type;
+        }
+        return null;
+    }
     private void addApplicationHandler(){
         this.service.addApplication(
             getInputInt("companyID"), 
             getInput("roleTitle"),
-            getInput("jobType"),
+            mapWorkingHoursToJobType(getInputInt("jobType")),
             getInput("status"),
             getInput("dateApplied"),
             getInput("followUpDate"),
