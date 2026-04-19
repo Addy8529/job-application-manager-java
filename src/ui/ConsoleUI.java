@@ -132,10 +132,11 @@ public class ConsoleUI {
         service.deleteCompanyById(this.scanner.nextInt());
     }
 
-    private JobType getJobType(String argument ){
+    private JobType getJobType( String argument ){
 
+        int level = getInputInt(argument);
         for (JobType type : JobType.values()){
-            if ( type.getWorkingHours() == getInputInt(argument) ) return type;
+            if ( type.getWorkingHours() == level ) return type;
         }
         return null;
     }
