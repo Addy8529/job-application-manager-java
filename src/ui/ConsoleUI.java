@@ -41,6 +41,9 @@ public class ConsoleUI {
                                 5: WITHDRAWN    
                             """ );
         map.put("dateApplied", "Enter application date:b " );
+        map.put("year", "Enter year: ");
+        map.put("month", "Enter Month ");
+        map.put("day", "Enter day: ");
         map.put("followUpDate", "Enter followup date: " );
         map.put("notes", "Enter notes: ");
 
