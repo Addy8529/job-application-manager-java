@@ -141,10 +141,10 @@ public class ConsoleUI {
         return null;
     }
  
-    private ApplicationStatus getApplicationStatus(String argument){
-
+    private ApplicationStatus getApplicationStatus( String argument ){
+        int workingHours = getInputInt(argument);
         for ( ApplicationStatus status : ApplicationStatus.values() ){
-            if ( status.getLevel() == getInputInt(argument) ) {
+            if ( status.getLevel() == workingHours ) {
                 return status;
             }
         }
