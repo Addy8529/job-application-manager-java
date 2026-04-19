@@ -52,6 +52,7 @@ public class ConsoleUI {
         String input = this.scanner.next();
         return input;
     }
+
     private Company addCompanyHandler() {
         
         try {
@@ -82,7 +83,6 @@ public class ConsoleUI {
 
     }
 
-    
     public void exit(){
         try {
             scanner.close();
@@ -92,6 +92,11 @@ public class ConsoleUI {
             System.out.println(e.getMessage());
         }
         
+    }
+
+    private void deleteCompanyHandler(){
+        System.out.print("Enter company id: ");
+        service.deleteCompanyById(this.scanner.nextInt());
     }
 
 }
