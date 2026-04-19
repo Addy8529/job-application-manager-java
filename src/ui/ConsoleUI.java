@@ -74,6 +74,7 @@ public class ConsoleUI {
        
         switch (selectedOption){
             case 1 -> addCompanyHandler();
+            case 3 -> System.out.println(this.service.getCompanies());
             case 13 -> exit();
         }
         
@@ -81,6 +82,7 @@ public class ConsoleUI {
 
     }
 
+    
     public void exit(){
         try {
             scanner.close();
