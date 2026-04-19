@@ -72,7 +72,7 @@ public class ConsoleUI {
         System.out.print(argument);
         return this.scanner.nextInt();
     }
-    
+
     private Company addCompanyHandler() {
         
         try {
@@ -122,7 +122,7 @@ public class ConsoleUI {
 
     private void addApplicationHandler(){
         this.service.addApplication(
-            getInput("companyID"), 
+            getInputInt("companyID"), 
             getInput("roleTitle"),
             getInput("jobType"),
             getInput("status"),
