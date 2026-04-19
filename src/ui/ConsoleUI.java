@@ -100,7 +100,7 @@ public class ConsoleUI {
     }
 
     private LocalDate getInputDate(String argument){
-        System.out.println(map.get(argument));
+        System.out.print(map.get(argument));
         return LocalDate.parse(this.scanner.next());
     }
 
@@ -164,7 +164,7 @@ public class ConsoleUI {
             getInput("roleTitle"),
             getJobType("jobType"),
             getApplicationStatus("status"),
-            getInputDate(getInput("dateApplied")),
+            getInputDate("dateApplied"),
             getInputDate("followUpDate"),
             getInput("notes")
         );
