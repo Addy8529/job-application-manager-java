@@ -30,7 +30,15 @@ public class ConsoleUI {
                                 40: Working Student             
                                 """
             );
-        map.put("status: ", "Enter application status: " );
+        map.put("status: ", """
+                                Enter application status: 
+                                0: APPLIED
+                                1: INTERVIEW
+                                2: OFFER
+                                3: REJECTED
+                                4: ACCEPTED
+                                5: WITHDRAWN    
+                            """ );
         map.put("dateApplied", "Enter application date:b " );
         map.put("followUpDate", "Enter followup date: " );
         map.put("notes", "Enter notes: ");
@@ -133,7 +141,7 @@ public class ConsoleUI {
             getInputInt("companyID"), 
             getInput("roleTitle"),
             mapWorkingHoursToJobType(getInputInt("jobType")),
-            getInput("status"),
+            getInputInt("status"),
             getInput("dateApplied"),
             getInput("followUpDate"),
             getInput("notes")
