@@ -83,7 +83,7 @@ public class ConsoleUI {
     }
 
     private int getInputInt(String argument){
-        System.out.print(argument);
+        System.out.print(map.get(argument));
         return this.scanner.nextInt();
     }
 
