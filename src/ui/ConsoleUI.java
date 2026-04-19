@@ -1,19 +1,24 @@
 package src.ui;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
-import java.net.URI;
-import java.net.URISyntaxException;
-
+import src.models.Company;
 import src.services.ApplicationService;
 
 public class ConsoleUI {
-    
+    private final HashMap<String, String> map = new HashMap<>(4);
     private ApplicationService service;
     private Scanner scanner;
+    public boolean isClosed;
     
     public ConsoleUI(ApplicationService service, Scanner scanner){
         this.service = service;
         this.scanner = scanner;
+        this.isClosed = false;
+
+        map.put("Cname","Enter name of the company: ");
+        map.put("description", "Enter description: ");
+        map.put("url", "Enter url: ");
+        map.put("n","Enter number of employees: ");
     }
     
     public void setService(ApplicationService service) {
@@ -25,51 +30,66 @@ public class ConsoleUI {
     }
 
     public void printMenu(){
-        System.out.println("Menu:\n" + 
-            "1: Add company\n" + 
-            "2: Add application\n" +
-            "3: List all companies\n" + 
-            "4: List all applications\n" +
-            "5: Find company by id\n" +
-            "6: Find application by id\n" +
-            "7: List applications by company id\n" +
-            "8: List applications by status\n" +
-            "9: Update application status\n" +
-            "10: Check application followup date\n" +
-            "11: Delete company\n" +
-            "12: Delete application\n" +
-            "13: Exit.\n"
-        );
+        System.out.println("""
+                           Menu:
+                           1: Add company
+                           2: Add application
+                           3: List all companies
+                           4: List all applications
+                           5: Find company by id
+                           6: Find application by id
+                           7: List applications by company id
+                           8: List applications by status
+                           9: Update application status
+                           10: Check application followup date
+                           11: Delete company
+                           12: Delete application
+                           13: Exit.
+                           """);
     }
-    private void addCompanyHandler() {
-        String[] prompts = {
-            "Enter company name: ",
-            "Enter description: ",
-            "Enter url: ",
-            "Enter number of employees: "
-        };
-        ArrayList<String> arguments = new ArrayList<>();
-
-        for ( String promt : prompts ) {
-            System.out.print(promt);
-            arguments.add(scanner.next());
-        }
+    private String getInput(String argument){
+        System.out.print(argument);
+        String input = this.scanner.next();
+        return input;
+    }
+    private Company addCompanyHandler() {
         
-        service.addCompany(arguments.get(0), arguments.get(1), arguments.get(2), Integer.parseInt(arguments.get(3)));
+        try {
+            return this.service.addCompany(
+                getInput(map.get("Cname")),
+                getInput(map.get("description")),
+                getInput(map.get("url")),
+                Integer.parseInt(getInput(map.get("n"))));
+           
+        } catch (NumberFormatException e) {
+            System.out.println("Caught Exception: " + e.getMessage());
+            System.out.println(e.getCause());
+        }
+        return null;
     }
 
-    public void exit(){
-        scanner.close();
-    }
+
     public void handleSelectedOption( int selectedOption ){
         
+       
         switch (selectedOption){
             case 1 -> addCompanyHandler();
             case 13 -> exit();
         }
+        
+        
 
     }
 
-    
+    public void exit(){
+        try {
+            scanner.close();
+            System.out.println("Exiting Application ...");
+            this.isClosed = true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+    }
 
 }
