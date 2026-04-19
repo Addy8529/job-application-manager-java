@@ -1,6 +1,7 @@
 package src.ui;
 import java.util.HashMap;
 import java.util.Scanner;
+import src.models.ApplicationStatus;
 import src.models.Company;
 import src.models.JobType;
 import src.services.ApplicationService;
@@ -136,12 +137,23 @@ public class ConsoleUI {
         }
         return null;
     }
+ 
+    private ApplicationStatus mapLevelToApplicationStatus(int level){
+
+        for ( ApplicationStatus status : ApplicationStatus.values() ){
+            if ( status.getLevel() == level ) {
+                return status;
+            }
+        }
+        return null;
+    }
+
     private void addApplicationHandler(){
         this.service.addApplication(
             getInputInt("companyID"), 
             getInput("roleTitle"),
             mapWorkingHoursToJobType(getInputInt("jobType")),
-            getInputInt("status"),
+            mapLevelToApplicationStatus(getInputInt("status")),
             getInput("dateApplied"),
             getInput("followUpDate"),
             getInput("notes")
