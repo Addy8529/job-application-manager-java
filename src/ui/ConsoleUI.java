@@ -32,7 +32,7 @@ public class ConsoleUI {
                                 40: Working Student             
                                 """
             );
-        map.put("status: ", """
+        map.put("status", """
                                 Enter application status: 
                                 0: APPLIED
                                 1: INTERVIEW
@@ -73,7 +73,7 @@ public class ConsoleUI {
                            13: Exit.
                            """);
     }
-    
+
     private String getInput(String argument){
         System.out.print(map.get(argument));
         String input = this.scanner.next();
@@ -89,7 +89,9 @@ public class ConsoleUI {
 
         int level = getInputInt(argument);
         for (JobType type : JobType.values()){
-            if ( type.getWorkingHours() == level ) return type;
+            if ( type.getWorkingHours() == level ){
+                return type;
+            } 
         }
         return null;
     }
@@ -174,5 +176,6 @@ public class ConsoleUI {
             getInput("notes")
         );
     }
+
 
 }
