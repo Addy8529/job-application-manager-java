@@ -76,6 +76,7 @@ public class ConsoleUI {
         switch (selectedOption){
             case 1 -> addCompanyHandler();
             case 3 -> System.out.println(this.service.getCompanies());
+            case 11 -> deleteCompanyHandler();
             case 13 -> exit();
         }
         
