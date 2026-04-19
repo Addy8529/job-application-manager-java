@@ -1,4 +1,5 @@
 package src.ui;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Scanner;
 import src.models.ApplicationStatus;
@@ -40,11 +41,11 @@ public class ConsoleUI {
                                 4: ACCEPTED
                                 5: WITHDRAWN    
                             """ );
-        map.put("dateApplied", "Enter application date:b " );
+        map.put("dateApplied", "Enter application date like YYYY-MM-DD: " );
         map.put("year", "Enter year: ");
         map.put("month", "Enter Month ");
         map.put("day", "Enter day: ");
-        map.put("followUpDate", "Enter followup date: " );
+        map.put("followUpDate", "Enter followup date like YYYY-MM-DD: " );
         map.put("notes", "Enter notes: ");
 
     }
@@ -151,14 +152,19 @@ public class ConsoleUI {
         return null;
     }
 
+    private LocalDate getInputDate(String text){
+        System.out.println(map.get(text));
+        return LocalDate.parse(this.scanner.next());
+    }
+
     private void addApplicationHandler(){
         this.service.addApplication(
             getInputInt("companyID"), 
             getInput("roleTitle"),
             mapWorkingHoursToJobType(getInputInt("jobType")),
             mapLevelToApplicationStatus(getInputInt("status")),
-            getInput("dateApplied"),
-            getInput("followUpDate"),
+            getInputDate(getInput("dateApplied")),
+            getInputDate("followUpDate"),
             getInput("notes")
         );
     }
