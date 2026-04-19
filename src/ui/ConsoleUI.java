@@ -24,23 +24,16 @@ public class ConsoleUI {
         map.put("n","Enter number of employees: ");
         map.put("CompanyId","Enter company id: ");
         map.put("roleTitle", "Enter job title: ");
-        map.put("jobType", """
-                                Enter working hours:
-                                120: Full time
-                                80: Part time
-                                100: Internship
-                                40: Working Student             
-                                """
-            );
-        map.put("status", """
-                                Enter application status: 
+        map.put("jobType", " Enter working hours 120, 10, 80, 40: ");
+        map.put("status", """ 
                                 0: APPLIED
                                 1: INTERVIEW
                                 2: OFFER
                                 3: REJECTED
                                 4: ACCEPTED
-                                5: WITHDRAWN    
-                            """ );
+                                5: WITHDRAWN
+                                Enter application status: """ 
+                            );
         map.put("dateApplied", "Enter application date like YYYY-MM-DD: " );
         map.put("followUpDate", "Enter followup date like YYYY-MM-DD: " );
         map.put("notes", "Enter notes: ");
