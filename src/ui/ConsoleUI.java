@@ -23,6 +23,7 @@ public class ConsoleUI {
         map.put("url", "Enter url: ");
         map.put("n","Enter number of employees: ");
         map.put("CompanyId","Enter company id: ");
+        map.put("ApplicationId","Enter application id: ");
         map.put("roleTitle", "Enter job title: ");
         map.put("jobType", " Enter working hours 120, 10, 80, 40: ");
         map.put("status", """ 
