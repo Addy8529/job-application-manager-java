@@ -128,7 +128,15 @@ public class ConsoleUI {
             case 1 -> addCompanyHandler();
             case 2 -> addApplicationHandler();
             case 3 -> System.out.println(this.service.getCompanies());
+            case 4 -> System.out.println(service.getApplications());
+            case 5 -> System.out.println(service.findCompanyById(getInputInt("CompanyId")));
+            case 6 -> System.out.println(service.findApplicationById(getInputInt("ApplicationId")));
+            case 7 -> System.out.println(service.listApplicationsByCompanyId(getInputInt("CompanyId")));
+            case 8 -> System.out.println(service.listApplicationsByStatus(getApplicationStatus("status")));
+            case 9 -> service.updateApplicationStatus(getInputInt("ApplicationId"), getApplicationStatus("status"));
+            case 10 -> System.out.println("Not implemented yet !!!");
             case 11 -> deleteCompanyHandler();
+            case 12 -> service.deleteApplication(getInputInt("ApplicationId"));
             case 13 -> exit();
         }
         
