@@ -1,6 +1,7 @@
 package src.ui;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import src.models.*;
 import src.services.ApplicationService;
@@ -71,13 +72,30 @@ public class ConsoleUI {
     private String getInput(String argument){
         print(OutputColor.YELLOW, map.get(argument));
         String input = this.scanner.next();
-        return (input != null && !input.isBlank() ) ? input : getInput(argument) ;
+
+        if( input != null && !input.isBlank() ) {
+            return input;
+        }else{
+            print(OutputColor.RED, argument + " cannot be empty!!!\n"  );
+            return getInput(argument);
+        }
     }
 
     private int getInputInt(String argument){
         print(OutputColor.YELLOW, map.get(argument));
-        int input = this.scanner.nextInt();
-        return (input > 0 ) ? input : getInputInt(argument);
+        int input;
+        try {
+            input = this.scanner.nextInt(); 
+            if( input >= 0 ) {
+                return input;
+            }else{
+                print(OutputColor.RED, argument + " cannot be negative!!!\n" );
+                return getInputInt(argument);  
+            }
+        } catch (InputMismatchException  e) {
+            print(OutputColor.RED, e.toString() + "\n" );
+            return getInputInt(argument);
+        }
     }
     
     private JobType getJobType( String argument ){
@@ -103,8 +121,14 @@ public class ConsoleUI {
 
     private LocalDate getInputDate(String argument){
         print(OutputColor.GREEN, map.get(argument));
-        LocalDate input = LocalDate.parse(this.scanner.next());
-        return (input != null ) ? input : getInputDate(argument);
+        LocalDate input;
+        try{
+            input = LocalDate.parse(this.scanner.next());
+            return input;
+        }catch (Exception e) {
+            print(OutputColor.RED, e.getMessage());
+            return getInputDate(argument);
+        }
     }
 
     private void addCompanyHandler() {
