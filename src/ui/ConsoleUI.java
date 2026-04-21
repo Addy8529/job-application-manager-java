@@ -50,8 +50,7 @@ public class ConsoleUI {
     }
 
     public void printMenu(){
-        System.out.println("""
-                            \u001B[34m
+        print(OutputColor.YELLOW,"""
                            Menu:
                            1: Add company
                            2: Add application
@@ -66,18 +65,16 @@ public class ConsoleUI {
                            11: Delete company
                            12: Delete application
                            13: Exit.
-                           \u001B[30m
                            """);
     }
 
     private String getInput(String argument){
-        System.out.print(map.get(argument));
-        String input = this.scanner.next();
-        return input;
+        print(OutputColor.YELLOW, map.get(argument));
+        return this.scanner.next();
     }
 
     private int getInputInt(String argument){
-        System.out.print(map.get(argument));
+        print(OutputColor.YELLOW, map.get(argument));
         return this.scanner.nextInt();
     }
     
@@ -103,7 +100,7 @@ public class ConsoleUI {
     }
 
     private LocalDate getInputDate(String argument){
-        System.out.print(map.get(argument));
+        print(OutputColor.GREEN, map.get(argument));
         return LocalDate.parse(this.scanner.next());
     }
 
@@ -117,8 +114,7 @@ public class ConsoleUI {
                 getInputInt("n"));
            
         } catch (NumberFormatException e) {
-            System.out.println("Caught Exception: " + e.getMessage());
-            System.out.println(e.getCause());
+            print(OutputColor.RED, "Caught Exception: " + e.getMessage());
         }
         return null;
     }
@@ -130,15 +126,15 @@ public class ConsoleUI {
         switch (selectedOption){
             case 1 -> addCompanyHandler();
             case 2 -> addApplicationHandler();
-            case 3 -> System.out.println(this.service.getCompanies());
-            case 4 -> System.out.println(service.getApplications());
-            case 5 -> System.out.println(service.findCompanyById(getInputInt("CompanyId")));
-            case 6 -> System.out.println(service.findApplicationById(getInputInt("ApplicationId")));
-            case 7 -> System.out.println(service.listApplicationsByCompanyId(getInputInt("CompanyId")));
-            case 8 -> System.out.println(service.listApplicationsByStatus(getApplicationStatus("status")));
-            case 9 -> service.updateApplicationStatus(getInputInt("ApplicationId"), getApplicationStatus("status"));
-            case 10 -> System.out.println("Not implemented yet !!!");
-            case 11 -> deleteCompanyHandler();
+            case 3 -> print(OutputColor.GREEN,this.service.getCompanies().toString());
+            case 4 -> print(OutputColor.GREEN, service.getApplications().toString());
+            case 5 -> print(OutputColor.GREEN, service.findCompanyById(getInputInt("CompanyId")).toString());
+            case 6 -> print(OutputColor.GREEN, service.findApplicationById(getInputInt("ApplicationId")).toString());
+            case 7 -> print(OutputColor.GREEN, service.listApplicationsByCompanyId(getInputInt("CompanyId")).toString());
+            case 8 -> print(OutputColor.GREEN, service.listApplicationsByStatus(getApplicationStatus("status")).toString());
+            case 9 -> service.updateApplicationStatus(getInputInt("ApplicationId"), getApplicationStatus("status"));            
+            case 10 -> print(OutputColor.RED, "Not implemented yet !!!");
+            case 11 -> this.service.deleteCompanyById(getInputInt("CompanyId"));
             case 12 -> service.deleteApplication(getInputInt("ApplicationId"));
             case 13 -> exit();
         }
@@ -150,18 +146,14 @@ public class ConsoleUI {
     private  void exit(){
         try {
             scanner.close();
-            System.out.println("Exiting Application ...");
+            print(OutputColor.BLUE, "Exiting Application ...");
             this.isClosed = true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            print(OutputColor.RED, e.getMessage());
         }
         
     }
 
-    private void deleteCompanyHandler(){
-        System.out.print("Enter company id: ");
-        service.deleteCompanyById(this.scanner.nextInt());
-    }
 
     
  
