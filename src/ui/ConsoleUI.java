@@ -70,12 +70,14 @@ public class ConsoleUI {
 
     private String getInput(String argument){
         print(OutputColor.YELLOW, map.get(argument));
-        return this.scanner.next();
+        String input = this.scanner.next();
+        return (input != null && !input.isBlank() ) ? input : getInput(argument) ;
     }
 
     private int getInputInt(String argument){
         print(OutputColor.YELLOW, map.get(argument));
-        return this.scanner.nextInt();
+        int input = this.scanner.nextInt();
+        return (input > 0 ) ? input : getInputInt(argument);
     }
     
     private JobType getJobType( String argument ){
@@ -101,22 +103,27 @@ public class ConsoleUI {
 
     private LocalDate getInputDate(String argument){
         print(OutputColor.GREEN, map.get(argument));
-        return LocalDate.parse(this.scanner.next());
+        LocalDate input = LocalDate.parse(this.scanner.next());
+        return (input != null ) ? input : getInputDate(argument);
     }
 
-    private Company addCompanyHandler() {
+    private void addCompanyHandler() {
         
         try {
-            return this.service.addCompany(
+            Company company = this.service.addCompany(
                 getInput("Cname"),
                 getInput("description"),
                 getInput("url"),
                 getInputInt("n"));
-           
+            if( company == null ) {
+                print(OutputColor.RED, "Company could not be created !!!\n");
+            }else{
+                print(OutputColor.GREEN, "Sucessfully created company:\n");
+                print(OutputColor.YELLOW, service.findCompanyById(company.getId()).toString()+"\n");
+            }
         } catch (NumberFormatException e) {
-            print(OutputColor.RED, "Caught Exception: " + e.getMessage());
+            print(OutputColor.RED, "Company could not be created !!!\n" + e.getMessage());
         }
-        return null;
     }
 
 
@@ -124,19 +131,45 @@ public class ConsoleUI {
         
        
         switch (selectedOption){
-            case 1 -> addCompanyHandler();
-            case 2 -> addApplicationHandler();
-            case 3 -> print(OutputColor.GREEN,this.service.getCompanies().toString());
-            case 4 -> print(OutputColor.GREEN, service.getApplications().toString());
-            case 5 -> print(OutputColor.GREEN, service.findCompanyById(getInputInt("CompanyId")).toString());
-            case 6 -> print(OutputColor.GREEN, service.findApplicationById(getInputInt("ApplicationId")).toString());
-            case 7 -> print(OutputColor.GREEN, service.listApplicationsByCompanyId(getInputInt("CompanyId")).toString());
-            case 8 -> print(OutputColor.GREEN, service.listApplicationsByStatus(getApplicationStatus("status")).toString());
-            case 9 -> service.updateApplicationStatus(getInputInt("ApplicationId"), getApplicationStatus("status"));            
-            case 10 -> print(OutputColor.RED, "Not implemented yet !!!");
-            case 11 -> this.service.deleteCompanyById(getInputInt("CompanyId"));
-            case 12 -> service.deleteApplication(getInputInt("ApplicationId"));
-            case 13 -> exit();
+            case 1 :
+                 addCompanyHandler();
+                 break;
+            case 2 :
+                 addApplicationHandler();
+                 break;
+            case 3 :
+                 print(OutputColor.GREEN,this.service.getCompanies().toString());
+                 break;
+            case 4 :
+                 print(OutputColor.GREEN, service.getApplications().toString());
+                 break;
+            case 5 :
+                 print(OutputColor.GREEN, service.findCompanyById(getInputInt("CompanyId")).toString());
+                 break;
+            case 6 :
+                 print(OutputColor.GREEN, service.findApplicationById(getInputInt("ApplicationId")).toString());
+                 break;
+            case 7 :
+                 print(OutputColor.GREEN, service.listApplicationsByCompanyId(getInputInt("CompanyId")).toString());
+                 break;
+            case 8 :
+                 print(OutputColor.GREEN, service.listApplicationsByStatus(getApplicationStatus("status")).toString());
+                 break;
+            case 9 :
+                 service.updateApplicationStatus(getInputInt("ApplicationId"), getApplicationStatus("status"));
+                 break;            
+            case 10 :
+                 print(OutputColor.RED, "Not implemented yet !!!");
+                 break;
+            case 11 :
+                 this.service.deleteCompanyById(getInputInt("CompanyId"));
+                 break;
+            case 12 :
+                 service.deleteApplication(getInputInt("ApplicationId"));
+                 break;
+            case 13 :
+                 exit();
+                 break;
         }
         
         
