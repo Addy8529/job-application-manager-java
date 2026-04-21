@@ -2,9 +2,7 @@ package src.ui;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Scanner;
-import src.models.ApplicationStatus;
-import src.models.Company;
-import src.models.JobType;
+import src.models.*;
 import src.services.ApplicationService;
 
 public class ConsoleUI {
@@ -12,6 +10,7 @@ public class ConsoleUI {
     private ApplicationService service;
     private Scanner scanner;
     public boolean isClosed;
+    
     
     public ConsoleUI(ApplicationService service, Scanner scanner){
         this.service = service;
@@ -40,6 +39,7 @@ public class ConsoleUI {
         map.put("notes", "Enter notes: ");
 
     }
+
     
     public void setService(ApplicationService service) {
         this.service = service;
@@ -51,6 +51,7 @@ public class ConsoleUI {
 
     public void printMenu(){
         System.out.println("""
+                            \u001B[34m
                            Menu:
                            1: Add company
                            2: Add application
@@ -65,6 +66,7 @@ public class ConsoleUI {
                            11: Delete company
                            12: Delete application
                            13: Exit.
+                           \u001B[30m
                            """);
     }
 
@@ -178,6 +180,11 @@ public class ConsoleUI {
             getInput("notes")
         );
     }
+
+    private void print(OutputColor color, String text){
+        System.out.print(color.getCode() + text + OutputColor.BLACK.getCode() );
+    }
+
 
 
 }
