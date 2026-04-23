@@ -11,7 +11,7 @@ dependencies {
 }
 
 application {
-    mainClass = 'src.java.Main'
+    mainClass = 'Main'
 }
 
 test {
