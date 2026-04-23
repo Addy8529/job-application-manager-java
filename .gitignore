@@ -28,6 +28,8 @@ replay_pid*
 .gradle/
 build/
 out/
+gradle-wrapper.*
+gradlew
 
 # vs-code
 settings.json
