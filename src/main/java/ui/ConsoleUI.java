@@ -1,10 +1,11 @@
-package src.ui;
+package src.main.java.ui;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import src.models.*;
-import src.services.ApplicationService;
+
+import src.main.java.models.*;
+import src.main.java.services.ApplicationService;
 
 public class ConsoleUI {
     private final HashMap<String, String> map = new HashMap<>(4);

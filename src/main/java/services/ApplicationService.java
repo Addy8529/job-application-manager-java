@@ -1,14 +1,15 @@
-package src.services;
+package src.main.java.services;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import src.main.java.models.ApplicationStatus;
+import src.main.java.models.Company;
+import src.main.java.models.JobApplication;
+import src.main.java.models.JobType;
+
 import java.net.URI;
-import src.models.ApplicationStatus;
-import src.models.Company;
-import src.models.JobApplication;
-import src.models.JobType;
 
 
 public class ApplicationService {
