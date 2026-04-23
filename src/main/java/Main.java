@@ -1,9 +1,8 @@
-package src.main.java;
 
 import java.util.Scanner;
 
-import src.main.java.services.ApplicationService;
-import src.main.java.ui.ConsoleUI;
+import services.ApplicationService;
+import ui.ConsoleUI;
 
 public class Main{
 
@@ -28,7 +27,7 @@ public class Main{
 
     public static void main(String[] args) {
         //start();
-        //System.err.println("This was an error");
+        System.out.println("Hello World");
 
         
 

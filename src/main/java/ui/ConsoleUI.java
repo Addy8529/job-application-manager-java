@@ -1,11 +1,14 @@
-package src.main.java.ui;
+package ui;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import src.main.java.models.*;
-import src.main.java.services.ApplicationService;
+import models.ApplicationStatus;
+import models.Company;
+import models.JobType;
+import models.OutputColor;
+import services.ApplicationService;
 
 public class ConsoleUI {
     private final HashMap<String, String> map = new HashMap<>(4);
@@ -156,45 +159,19 @@ public class ConsoleUI {
         
        
         switch (selectedOption){
-            case 1 :
-                 addCompanyHandler();
-                 break;
-            case 2 :
-                 addApplicationHandler();
-                 break;
-            case 3 :
-                 print(OutputColor.GREEN,this.service.getCompanies().toString());
-                 break;
-            case 4 :
-                 print(OutputColor.GREEN, service.getApplications().toString());
-                 break;
-            case 5 :
-                 print(OutputColor.GREEN, service.findCompanyById(getInputInt("CompanyId")).toString());
-                 break;
-            case 6 :
-                 print(OutputColor.GREEN, service.findApplicationById(getInputInt("ApplicationId")).toString());
-                 break;
-            case 7 :
-                 print(OutputColor.GREEN, service.listApplicationsByCompanyId(getInputInt("CompanyId")).toString());
-                 break;
-            case 8 :
-                 print(OutputColor.GREEN, service.listApplicationsByStatus(getApplicationStatus("status")).toString());
-                 break;
-            case 9 :
-                 service.updateApplicationStatus(getInputInt("ApplicationId"), getApplicationStatus("status"));
-                 break;            
-            case 10 :
-                 print(OutputColor.RED, "Not implemented yet !!!");
-                 break;
-            case 11 :
-                 this.service.deleteCompanyById(getInputInt("CompanyId"));
-                 break;
-            case 12 :
-                 service.deleteApplication(getInputInt("ApplicationId"));
-                 break;
-            case 13 :
-                 exit();
-                 break;
+            case 1 -> addCompanyHandler();
+            case 2 -> addApplicationHandler();
+            case 3 -> print(OutputColor.GREEN,this.service.getCompanies().toString());
+            case 4 -> print(OutputColor.GREEN, service.getApplications().toString());
+            case 5 -> print(OutputColor.GREEN, service.findCompanyById(getInputInt("CompanyId")).toString());
+            case 6 -> print(OutputColor.GREEN, service.findApplicationById(getInputInt("ApplicationId")).toString());
+            case 7 -> print(OutputColor.GREEN, service.listApplicationsByCompanyId(getInputInt("CompanyId")).toString());
+            case 8 -> print(OutputColor.GREEN, service.listApplicationsByStatus(getApplicationStatus("status")).toString());
+            case 9 -> service.updateApplicationStatus(getInputInt("ApplicationId"), getApplicationStatus("status"));
+            case 10 -> print(OutputColor.RED, "Not implemented yet !!!");
+            case 11 -> this.service.deleteCompanyById(getInputInt("CompanyId"));
+            case 12 -> service.deleteApplication(getInputInt("ApplicationId"));
+            case 13 -> exit();
         }
         
         

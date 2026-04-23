@@ -1,4 +1,4 @@
-package src.main.java.models;
+package models;
 
 import java.net.URI;
 
@@ -101,9 +101,7 @@ public class Company {
         if (getClass() != obj.getClass())
             return false;
         Company other = (Company) obj;
-        if (id != other.id)
-            return false;
-        return true;
+        return id == other.id;
     }
 
     

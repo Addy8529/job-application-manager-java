@@ -1,4 +1,4 @@
-package src.main.java.models;
+package models;
 
 public enum JobType {
    
@@ -8,7 +8,7 @@ public enum JobType {
     WORKING_STUDENT(40),
     INTERNSHIP(100);    
 
-    private int workingHours;
+    private final int workingHours;
     
     JobType(int workingHours){
         this.workingHours = workingHours;

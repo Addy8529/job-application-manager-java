@@ -1,4 +1,4 @@
-package src.main.java.models;
+package models;
 
 public enum ApplicationStatus {
     APPLIED(0),

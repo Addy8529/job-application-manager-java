@@ -1,4 +1,4 @@
-package src.main.java.models;
+package models;
 
 import java.time.LocalDate;
 
@@ -153,9 +153,7 @@ public class JobApplication {
         if (getClass() != obj.getClass())
             return false;
         JobApplication other = (JobApplication) obj;
-        if (id != other.id)
-            return false;
-        return true;
+        return id == other.id;
     }
 
     @Override

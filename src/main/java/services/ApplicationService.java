@@ -1,21 +1,21 @@
-package src.main.java.services;
+package services;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import src.main.java.models.ApplicationStatus;
-import src.main.java.models.Company;
-import src.main.java.models.JobApplication;
-import src.main.java.models.JobType;
-
-import java.net.URI;
+import models.ApplicationStatus;
+import models.Company;
+import models.JobApplication;
+import models.JobType;
 
 
 public class ApplicationService {
     
-    private ArrayList<Company> companies;
-    private ArrayList<JobApplication> applications;
+    private final ArrayList<Company> companies;
+    private final ArrayList<JobApplication> applications;
     private int nextCompanyId;
     private int nextApplicationId;
 
@@ -39,7 +39,7 @@ public class ApplicationService {
             nextCompanyId++;
             this.companies.add(company);
             return company;
-        }catch (Exception e){
+        }catch (URISyntaxException e){
             System.out.println("Caugth Exception: " + e.getMessage() );
         }
 
