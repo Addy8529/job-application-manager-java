@@ -114,4 +114,16 @@ public class CompanyTest {
             System.out.println("External caused by URI: "+ e.getMessage());
         }
     }
+
+    @ParameterizedTest
+    @ValueSource( strings = {"http://www.ibm.com", "ws://www.ibm.com", "https://ibm.com"})
+    void ConstructorAcceptsValidUrl( String url){
+
+        try{
+            URI uri = new URI(url);
+            assertEquals( uri, new Company(0, "IBM", "description", uri, 0).getUrl());
+        }catch ( Exception e){
+            System.out.println("External caused by URI: "+ e.getMessage());
+        }
+    }
 }
