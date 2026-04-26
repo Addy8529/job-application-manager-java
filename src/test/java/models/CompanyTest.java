@@ -136,4 +136,15 @@ public class CompanyTest {
         }
 
     }
+
+    @ParameterizedTest
+    @ValueSource( ints = {0, 10 , 100})
+    void ConstructorAcceptsValidNumberOfPeople(int n){
+        try{
+            assertEquals( n , new Company(0 ,"IBM", "description", new URI("http://ibm.com"), n).getNumberOfEmployees());
+        }catch(Exception e){
+            System.out.println("Caused by URI class: "+ e.getMessage());
+        }
+
+    }
 }
