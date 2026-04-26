@@ -20,26 +20,30 @@ public class Company {
             throw new IllegalArgumentException("Name cannot be null or blank." );
         }
 
+        if ( description == null || description.trim().isBlank() ){
+            throw new IllegalArgumentException("Name cannot be null or blank." );
+        }
+
         if ( !isValidURL(url) ) {
             throw new IllegalArgumentException("url cannot be null." );
-        } 
+        }
         if (numberOfEmployees < 0 ) {
             throw new IllegalArgumentException("number of employees cannot be negative." );
         }
         this.id = id;
-        this.name = name;
-        this.description = description;
+        this.name = name.trim();
+        this.description = description.trim();
         this.url = url;
         this.numberOfEmployees = numberOfEmployees;
         }
 
     private static boolean isValidURL(URI url){
-        return  ( url != null && 
-            url.getScheme() != null && 
-            !url.getScheme().isBlank() && 
-            url.getAuthority() != null && 
+        return  ( url != null &&
+            url.getScheme() != null &&
+            !url.getScheme().isBlank() &&
+            url.getAuthority() != null &&
             !url.getAuthority().isBlank());
-        
+
     }
     public int getId(){
         return this.id;
@@ -78,7 +82,7 @@ public class Company {
 
     @Override
     public String toString() {
-        return "ID: "+this.getId() + 
+        return "ID: "+this.getId() +
         " | Name: "+this.getName()+
         " | Url: "+this.getUrl()+
         " | Description: "+this.getDescription();
@@ -104,15 +108,15 @@ public class Company {
         return id == other.id;
     }
 
-    
-
-    
-    
-    
-
-    
 
 
 
-    
+
+
+
+
+
+
+
+
 }
