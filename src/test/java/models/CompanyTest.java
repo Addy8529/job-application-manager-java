@@ -85,4 +85,16 @@ public class CompanyTest {
 
     }
 
+    @ParameterizedTest
+    @ValueSource( strings = {" IBM ", "Deloitte   ", " Good  Company"} )
+    void ConstructorTrimsDescription( String description){
+
+        String expected = description.trim();
+
+        try{
+            assertEquals( expected, new Company(0  , "IBM", description, new URI("http://ibm.com"), 0).getName());
+        }catch(Exception e){
+            System.out.println("Caused by URI class: "+ e.getMessage());
+        }
+    }
 }
