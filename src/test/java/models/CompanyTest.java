@@ -126,4 +126,14 @@ public class CompanyTest {
             System.out.println("External caused by URI: "+ e.getMessage());
         }
     }
+
+    @Test
+    void ConstructorRejectsInvalidNumberOfPeople(){
+        try{
+            assertThrows( IllegalArgumentException.class , ()-> new Company(0 ,"IBM", "description", new URI("http://ibm.com"), -1));
+        }catch(Exception e){
+            System.out.println("Caused by URI class: "+ e.getMessage());
+        }
+
+    }
 }
