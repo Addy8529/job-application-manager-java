@@ -1,4 +1,5 @@
 package models;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -13,7 +14,17 @@ public class CompanyTest {
     @Test
     void CompanyConstructorAcceptsValidParameters(){
         try{
-            assertNotNull( new Company(0,"IBM", "description", new URI("http://ibm.com"), 0) );
+            Company company = new Company(0,"IBM", "description", new URI("http://ibm.com"), 0);
+            assertAll(
+                () -> assertNotNull(company),
+                () -> assertEquals(0, company.getId()),
+                () -> assertEquals("IBM", company.getName()),
+                () -> assertEquals("description", company.getDescription()),
+                () -> assertEquals(new URI("http://ibm.com"), company.getUrl()),
+                () -> assertEquals(0, company.getNumberOfEmployees())
+
+            );
+
         }catch(Exception e){
             System.out.println("Caused by URI class: "+ e.getMessage());
         }
@@ -147,4 +158,6 @@ public class CompanyTest {
         }
 
     }
+
+
 }
