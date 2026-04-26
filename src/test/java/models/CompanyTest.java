@@ -1,4 +1,5 @@
 package models;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -49,5 +50,20 @@ public class CompanyTest {
         }
 
     }
+
+    @ParameterizedTest
+    @ValueSource( strings = {" IBM ", "Deloitte   ", " Good  Company"} )
+    void ConstructorTrimsCompanyName( String name){
+
+        String expected = name.trim();
+
+        try{
+            assertEquals( expected, new Company(0  , name, "description", new URI("http://ibm.com"), 0).getName());
+        }catch(Exception e){
+            System.out.println("Caused by URI class: "+ e.getMessage());
+        }
+    }
+
+
 
 }
