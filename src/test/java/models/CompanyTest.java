@@ -97,4 +97,9 @@ public class CompanyTest {
             System.out.println("Caused by URI class: "+ e.getMessage());
         }
     }
+
+    @Test
+    void ConstructorRejectsNullURL(){
+        assertThrows( IllegalArgumentException.class, () -> new Company(0, "IBM", "description", null, 0));
+    }
 }
