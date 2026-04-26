@@ -102,4 +102,16 @@ public class CompanyTest {
     void ConstructorRejectsNullURL(){
         assertThrows( IllegalArgumentException.class, () -> new Company(0, "IBM", "description", null, 0));
     }
+
+    @ParameterizedTest
+    @ValueSource( strings = {"", "http://", "www.com", "ibm.com"})
+    void ConstructorRejectsInvalidUrl( String url){
+
+        try{
+            URI uri = new URI(url);
+            assertThrows( IllegalArgumentException.class, () -> new Company(0, "IBM", "description", uri, 0));
+        }catch ( Exception e){
+            System.out.println("External caused by URI: "+ e.getMessage());
+        }
+    }
 }
