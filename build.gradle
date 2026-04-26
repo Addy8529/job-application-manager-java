@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id 'jacoco'
 }
 
 repositories {
@@ -18,6 +19,16 @@ application {
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 
+}
+
+jacocoTestReport {
+    dependsOn test
+
+    reports {
+        html.required = true
+        xml.required = true
+    }
 }
 
