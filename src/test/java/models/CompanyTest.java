@@ -64,6 +64,15 @@ public class CompanyTest {
         }
     }
 
+    @ParameterizedTest
+    @ValueSource( strings = {"", "  "})
+    void ConstructorRejectsInvalidDescription(String description){
+        try{
+            assertThrows( IllegalArgumentException.class , ()-> new Company(0  , "IBM", description, new URI("http://ibm.com"), 0));
+        }catch(Exception e){
+            System.out.println("Caused by URI class: "+ e.getMessage());
+        }
 
+    }
 
 }
