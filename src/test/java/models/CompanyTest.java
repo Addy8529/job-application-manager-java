@@ -75,4 +75,14 @@ public class CompanyTest {
 
     }
 
+    @Test
+    void ConstructorRejectsNullDescription(){
+        try{
+            assertThrows( IllegalArgumentException.class , ()-> new Company(0  , "IBM", null, new URI("http://ibm.com"), 0));
+        }catch(Exception e){
+            System.out.println("Caused by URI class: "+ e.getMessage());
+        }
+
+    }
+
 }
