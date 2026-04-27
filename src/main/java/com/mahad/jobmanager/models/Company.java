@@ -1,4 +1,4 @@
-package models;
+package com.mahad.jobmanager.models;
 
 import java.net.URI;
 
