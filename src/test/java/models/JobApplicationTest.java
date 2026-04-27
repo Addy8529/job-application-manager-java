@@ -62,5 +62,18 @@ public class JobApplicationTest {
         );
     }
 
-    
+    @ParameterizedTest
+    @ValueSource( strings = {"", "  ","   "})
+    void ConstructorRejectsEmptyTitle(String title){
+
+        assertThrows(
+            IllegalArgumentException.class,
+            () ->  new JobApplication(
+                0 ,
+                0 ,
+                title,
+                JobType.FULL_TIME
+            )
+        );
+    }
 }
