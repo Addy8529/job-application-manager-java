@@ -1,5 +1,6 @@
 package models;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -75,5 +76,15 @@ public class JobApplicationTest {
                 JobType.FULL_TIME
             )
         );
+    }
+
+    @ParameterizedTest
+    @ValueSource( strings = {"Software Developer  ", "  PenTester","   Backend Developer     "})
+    void ConstructorTrimsTitle(String title){
+
+        JobApplication app =  new JobApplication(0, 0, title, JobType.FULL_TIME);
+        String trimmedTitel = title.trim();
+
+        assertEquals(trimmedTitel, app.getRoleTitle());
     }
 }
