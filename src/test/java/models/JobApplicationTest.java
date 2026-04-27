@@ -25,7 +25,8 @@ public class JobApplicationTest {
     }
 
     @Test
-    void ConstructorRejectsNullTitel(){
+    void ConstructorRejectsNullTitle(){
         assertThrows( IllegalArgumentException.class, () -> new JobApplication(0 , 0 , null, JobType.FULL_TIME));
     }
+
 }
