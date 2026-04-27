@@ -18,4 +18,9 @@ public class JobApplicationTest {
     void ConstructorRejectsInvalidId(){
         assertThrows( IllegalArgumentException.class, () -> new JobApplication(-1, 0, "Software Developer", JobType.FULL_TIME));
     }
+
+    @Test
+    void ConstructorRejectsInvalidCompanyId(){
+        assertThrows( IllegalArgumentException.class, () -> new JobApplication(0 , -1 , "Software Developer", JobType.FULL_TIME));
+    }
 }
