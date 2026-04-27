@@ -4,29 +4,63 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class JobApplicationTest {
 
     @Test
     void ConstructorReturnsValidObject(){
 
-        assertNotNull(new JobApplication(0, 0, "Software Developer", JobType.FULL_TIME));
+        assertNotNull(
+            new JobApplication(
+                0,
+                0,
+                "Software Developer",
+                JobType.FULL_TIME
+            )
+        );
 
     }
 
     @Test
     void ConstructorRejectsInvalidId(){
-        assertThrows( IllegalArgumentException.class, () -> new JobApplication(-1, 0, "Software Developer", JobType.FULL_TIME));
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> new JobApplication(
+                -1,
+                0,
+                "Software Developer",
+                JobType.FULL_TIME
+            )
+        );
     }
 
     @Test
     void ConstructorRejectsInvalidCompanyId(){
-        assertThrows( IllegalArgumentException.class, () -> new JobApplication(0 , -1 , "Software Developer", JobType.FULL_TIME));
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> new JobApplication(
+                0 ,
+                -1 ,
+                "Software Developer",
+                JobType.FULL_TIME
+            )
+        );
     }
 
     @Test
     void ConstructorRejectsNullTitle(){
-        assertThrows( IllegalArgumentException.class, () -> new JobApplication(0 , 0 , null, JobType.FULL_TIME));
+        assertThrows(
+             IllegalArgumentException.class,
+            () -> new JobApplication(
+                0 ,
+                0 ,
+                null,
+                JobType.FULL_TIME
+            )
+        );
     }
 
+    
 }
