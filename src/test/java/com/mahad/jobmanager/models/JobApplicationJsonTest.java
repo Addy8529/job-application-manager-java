@@ -13,13 +13,14 @@ import org.springframework.boot.test.json.JacksonTester;
 public class JobApplicationJsonTest {
 
     @Autowired
-    private JacksonTester<JobApplication> json;
+    private JacksonTester<Application> json;
 
     @Test
     void shouldCreateValidJson() throws IOException{
-        JobApplication application = new JobApplication(0, 0, "Software Developer", JobType.FULL_TIME);
+        Application application =  new Application(0,"Software Developer");
 
-        assertThat(json.write(application)).isStrictlyEqualToJson("expectedApplication.json");
+        assertThat(json.write(application)).isStrictlyEqualToJson("app.json");
+        
 
     }
 }
