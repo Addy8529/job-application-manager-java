@@ -6,17 +6,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.mahad.jobmanager.models.ApplicationStatus;
 import com.mahad.jobmanager.models.Company;
 import com.mahad.jobmanager.models.JobApplication;
 import com.mahad.jobmanager.models.JobType;
 
-@RestController("/app")
+
 public class ApplicationService {
 
     private final ArrayList<Company> companies;
@@ -116,13 +111,13 @@ public class ApplicationService {
         }
         return result;
     }
-    @GetMapping("/company/{id}")
-    public ResponseEntity<String> findCompanyById(@PathVariable int id){
+
+    public Company findCompanyById(int id){
 
         for (Company company : companies){
 
             if( company.getId() == id){
-                return ResponseEntity.ok("{}");
+                return company;
             }
         }
         return null;
