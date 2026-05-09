@@ -48,7 +48,19 @@ public class ApplicationController {
         return ResponseEntity.created(URI.create("/app/" + newApplication.id())).body(newApplication);
     }
 
-    //@PutMapping("/{id}")
+    @PutMapping("/{id}")
+    private ResponseEntity<Void> updateApplicationById(
+        @PathVariable @NonNull Integer id,
+        @RequestBody Application updatedApplication){
+            if ( applicationRepository.findById(id).isPresent()){
+                applicationRepository.save(new Application(id, updatedApplication.title()));
+                return ResponseEntity.noContent().build();
+            }else{
+                return ResponseEntity.notFound().build();
+            }
+
+
+    }
     //@DeleteMapping("/{id}")
 
 
