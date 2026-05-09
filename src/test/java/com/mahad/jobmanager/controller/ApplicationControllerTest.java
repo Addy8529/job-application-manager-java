@@ -32,7 +32,50 @@ public class ApplicationControllerTest {
         .andExpect(status().isNotFound());
     }
 
-    
+    @Test
+    void shouldCreateApplication() throws Exception{
+        String application = """
+                {
+                "id": null,
+                "title": "Java Developer"
+                }
+                """;
+        mvc.perform(post("/app").contentType(MediaType.APPLICATION_JSON).content(application))
+        .andExpect(status().isCreated())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(header().exists("location"))
+        .andExpect(jsonPath("$.title").value("Java Developer"));
+    }
+
+    @Test
+    void shouldNotCreateApplicationWithInvalidTitle() throws Exception{
+        String app1 = """
+                {
+                "id": null,
+                "title": null
+                }
+                """;
+        String app2 = """
+                {
+                "id": null,
+                "title": ""
+                }
+                """;
+        String app3 = """
+                {
+                "id": null,
+                "title": " "
+                }
+                """;
+        mvc.perform(post("/app").contentType(MediaType.APPLICATION_JSON).content(app1))
+        .andExpect(status().isBadRequest());
+        mvc.perform(post("/app").contentType(MediaType.APPLICATION_JSON).content(app2))
+        .andExpect(status().isBadRequest());
+        mvc.perform(post("/app").contentType(MediaType.APPLICATION_JSON).content(app3))
+        .andExpect(status().isBadRequest());
+    }
+
+
 
 
 
