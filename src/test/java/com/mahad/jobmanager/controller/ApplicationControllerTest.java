@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.http.MediaType;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -73,6 +75,51 @@ public class ApplicationControllerTest {
         .andExpect(status().isBadRequest());
         mvc.perform(post("/app").contentType(MediaType.APPLICATION_JSON).content(app3))
         .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldUpdateExistingApplication() throws Exception{
+        String app = """
+                {
+                 "id": null,
+                 "title": "Pentester"
+                 }
+                """;
+        String newApp = """
+                {
+                 "id": null,
+                 "title": "Penetration Tester"
+                 }
+                """;
+        ResultActions response = mvc.perform(post("/app").contentType(MediaType.APPLICATION_JSON).content(app));
+
+        response.andExpect(status().isCreated())
+        .andExpect(header().exists("location"));
+
+        MvcResult result = response.andReturn();
+        String url = result.getResponse().getHeader("location");
+
+        mvc.perform(put(url).contentType(MediaType.APPLICATION_JSON).content(newApp))
+        .andExpect(status().isNoContent());
+
+        mvc.perform(get(url))
+        .andExpect(jsonPath("$.title").value("Penetration Tester"));
+
+
+
+    }
+
+    @Test
+    void shouldNotUpdateNonExistingApplication() throws Exception{
+        String app = """
+                {
+                 "id": null,
+                 "title": "Pentester"
+                 }
+                """;
+        mvc.perform(put("/app/1000").contentType(MediaType.APPLICATION_JSON).content(app))
+        .andExpect(status().isNotFound());
+        
     }
 
 
