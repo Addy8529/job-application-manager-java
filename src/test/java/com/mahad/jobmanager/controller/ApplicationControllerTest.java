@@ -119,7 +119,27 @@ public class ApplicationControllerTest {
                 """;
         mvc.perform(put("/app/1000").contentType(MediaType.APPLICATION_JSON).content(app))
         .andExpect(status().isNotFound());
-        
+
+    }
+
+    @Test
+    void shouldDeleteExistingApplication() throws Exception{
+        String app = """
+                {
+                 "id": null,
+                 "title": "Pentester"
+                 }
+                """;
+        MvcResult result = mvc.perform(post("/app")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(app)).andReturn();
+
+        String url = result.getResponse().getHeader("location");
+
+        mvc.perform(delete(url))
+        .andExpect(status().isOk());
+
+        mvc.perform(get(url)).andExpect(status().isNotFound());
     }
 
 
