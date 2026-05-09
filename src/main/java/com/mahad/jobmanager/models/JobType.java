@@ -1,15 +1,15 @@
-package models;
+package com.mahad.jobmanager.models;
 
 public enum JobType {
-   
-    
+
+
     FULL_TIME(120),
     PART_TIME(80),
     WORKING_STUDENT(40),
-    INTERNSHIP(100);    
+    INTERNSHIP(100);
 
     private final int workingHours;
-    
+
     JobType(int workingHours){
         this.workingHours = workingHours;
     }
@@ -20,5 +20,5 @@ public enum JobType {
 
 
 
-    
+
 }

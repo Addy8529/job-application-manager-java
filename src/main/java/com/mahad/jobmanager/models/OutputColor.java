@@ -1,7 +1,7 @@
-package models;
+package com.mahad.jobmanager.models;
 
 public enum OutputColor {
-    
+
     BLACK("\u001B[30m"),
     RED("\u001B[31m"),
     GREEN("\u001B[32m"),
@@ -20,7 +20,7 @@ public enum OutputColor {
     public String getCode(){
         return this.code;
     }
-     
 
-    
+
+
 }

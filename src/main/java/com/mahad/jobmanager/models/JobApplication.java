@@ -1,4 +1,4 @@
-package models;
+package com.mahad.jobmanager.models;
 
 import java.time.LocalDate;
 
@@ -15,35 +15,35 @@ public class JobApplication {
 
     public JobApplication(int id,int companyId, String roleTitle, JobType jobType, ApplicationStatus status,
             LocalDate dateApplied, LocalDate followUpDate, String notes) {
-        
+
             if ( id < 0 ) {
                 throw new IllegalArgumentException("id cannot be negative.");
             }
-                
+
             if ( companyId < 0 ) {
                 throw new IllegalArgumentException("companyId cannot be negative.");
             }
-            
+
             if ( !isRoleTitleValid(roleTitle) ) {
                 throw new IllegalArgumentException("roleTitle cannot be null or blank.");
             }
-            
+
             if ( jobType == null ) {
                 throw new IllegalArgumentException("JobType cannot be null.");
             }
-            
+
             if ( dateApplied == null ) {
                 throw new IllegalArgumentException("dateApplied cannot be null.");
             }
 
-            LocalDate resolvedFollowUpDate = ( followUpDate != null ) 
-                ? followUpDate 
-                : dateApplied.plusDays(7); 
-            
+            LocalDate resolvedFollowUpDate = ( followUpDate != null )
+                ? followUpDate
+                : dateApplied.plusDays(7);
+
             if ( resolvedFollowUpDate.isBefore(dateApplied) ) {
                 throw new IllegalArgumentException("Follow-up date cannot be before application date");
             }
-                
+
             this.id = id;
             this.companyId = companyId;
             this.roleTitle = roleTitle.trim();
@@ -53,11 +53,11 @@ public class JobApplication {
             this.followUpDate = resolvedFollowUpDate;
             this.notes = (notes == null || notes.isBlank()) ? "No notes." : notes.trim();
 
-             
+
     }
-    
+
     public JobApplication(int id, int companyId, String roleTitle, JobType jobType) {
-        
+
         if ( id < 0 ) {
             throw new IllegalArgumentException("id cannot be negative.");
         }
@@ -85,7 +85,7 @@ public class JobApplication {
     }
 
     private boolean isRoleTitleValid(String roleTitle){
-        return ( roleTitle != null && !roleTitle.trim().isBlank() );  
+        return ( roleTitle != null && !roleTitle.trim().isBlank() );
     }
 
     public int getId() {
@@ -167,6 +167,6 @@ public class JobApplication {
        " | Notes: "+ notes;
     }
 
-    
+
 
 }

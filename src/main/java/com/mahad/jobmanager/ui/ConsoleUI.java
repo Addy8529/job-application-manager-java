@@ -1,22 +1,22 @@
-package ui;
+package com.mahad.jobmanager.ui;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import models.ApplicationStatus;
-import models.Company;
-import models.JobType;
-import models.OutputColor;
-import services.ApplicationService;
+import com.mahad.jobmanager.models.ApplicationStatus;
+import com.mahad.jobmanager.models.Company;
+import com.mahad.jobmanager.models.JobType;
+import com.mahad.jobmanager.models.OutputColor;
+import com.mahad.jobmanager.services.ApplicationService;
 
 public class ConsoleUI {
     private final HashMap<String, String> map = new HashMap<>(4);
     private ApplicationService service;
     private Scanner scanner;
     public boolean isClosed;
-    
-    
+
+
     public ConsoleUI(ApplicationService service, Scanner scanner){
         this.service = service;
         this.scanner = scanner;
@@ -30,14 +30,14 @@ public class ConsoleUI {
         map.put("ApplicationId","Enter application id: ");
         map.put("roleTitle", "Enter job title: ");
         map.put("jobType", "Enter working hours 120, 10, 80, 40: ");
-        map.put("status", """ 
+        map.put("status", """
                                 0: APPLIED
                                 1: INTERVIEW
                                 2: OFFER
                                 3: REJECTED
                                 4: ACCEPTED
                                 5: WITHDRAWN
-                                Enter application status: """ 
+                                Enter application status: """
                             );
         map.put("dateApplied", "Enter application date like YYYY-MM-DD: " );
         map.put("followUpDate", "Enter followup date like YYYY-MM-DD: " );
@@ -45,7 +45,7 @@ public class ConsoleUI {
 
     }
 
-    
+
     public void setService(ApplicationService service) {
         this.service = service;
     }
@@ -89,26 +89,26 @@ public class ConsoleUI {
         print(OutputColor.YELLOW, map.get(argument));
         int input;
         try {
-            input = this.scanner.nextInt(); 
+            input = this.scanner.nextInt();
             if( input >= 0 ) {
                 return input;
             }else{
                 print(OutputColor.RED, argument + " cannot be negative!!!\n" );
-                return getInputInt(argument);  
+                return getInputInt(argument);
             }
         } catch (InputMismatchException  e) {
             print(OutputColor.RED, e.toString() + "\n" );
             return getInputInt(argument);
         }
     }
-    
+
     private JobType getJobType( String argument ){
 
         int level = getInputInt(argument);
         for (JobType type : JobType.values()){
             if ( type.getWorkingHours() == level ){
                 return type;
-            } 
+            }
         }
         return null;
     }
@@ -136,7 +136,7 @@ public class ConsoleUI {
     }
 
     private void addCompanyHandler() {
-        
+
         try {
             Company company = this.service.addCompany(
                 getInput("Cname"),
@@ -156,8 +156,8 @@ public class ConsoleUI {
 
 
     public void handleSelectedOption( int selectedOption ){
-        
-       
+
+
         switch (selectedOption){
             case 1 -> addCompanyHandler();
             case 2 -> addApplicationHandler();
@@ -173,8 +173,8 @@ public class ConsoleUI {
             case 12 -> service.deleteApplication(getInputInt("ApplicationId"));
             case 13 -> exit();
         }
-        
-        
+
+
 
     }
 
@@ -186,19 +186,19 @@ public class ConsoleUI {
         } catch (Exception e) {
             print(OutputColor.RED, e.getMessage());
         }
-        
+
     }
 
 
-    
- 
-    
 
-    
+
+
+
+
 
     private void addApplicationHandler(){
 
-        this.service.addApplication(getInputInt("CompanyId"), 
+        this.service.addApplication(getInputInt("CompanyId"),
             getInput("roleTitle"),
             getJobType("jobType"),
             getApplicationStatus("status"),

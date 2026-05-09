@@ -1,4 +1,4 @@
-package models;
+package com.mahad.jobmanager.models;
 
 public enum ApplicationStatus {
     APPLIED(0),
@@ -7,7 +7,7 @@ public enum ApplicationStatus {
     REJECTED(3),
     ACCEPTED(4),
     WITHDRAWN(5);
-    
+
     private ApplicationStatus(int level) {
         this.level = level;
     }
@@ -21,5 +21,5 @@ public enum ApplicationStatus {
 
 
 
-    
+
 }

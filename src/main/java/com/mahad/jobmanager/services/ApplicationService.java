@@ -1,4 +1,4 @@
-package services;
+package com.mahad.jobmanager.services;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -6,14 +6,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import models.ApplicationStatus;
-import models.Company;
-import models.JobApplication;
-import models.JobType;
+import com.mahad.jobmanager.models.ApplicationStatus;
+import com.mahad.jobmanager.models.Company;
+import com.mahad.jobmanager.models.JobApplication;
+import com.mahad.jobmanager.models.JobType;
 
 
 public class ApplicationService {
-    
+
     private final ArrayList<Company> companies;
     private final ArrayList<JobApplication> applications;
     private int nextCompanyId;
@@ -27,7 +27,7 @@ public class ApplicationService {
     }
 
     public Company addCompany( String name, String description, String url, int numberOfEmployees ){
-        
+
         if ( nextCompanyId < 0 ) {
             throw new InternalError("nextCompanyId was negative." );
         }
@@ -35,7 +35,7 @@ public class ApplicationService {
         try{
             URI uri = new URI(url);
             Company company = new Company(nextCompanyId, name, description, uri, numberOfEmployees);
-            
+
             nextCompanyId++;
             this.companies.add(company);
             return company;
@@ -45,17 +45,17 @@ public class ApplicationService {
 
         return null;
     }
-    
+
 
     public JobApplication addApplication(
-        int companyId, 
-        String roleTitle, 
-        JobType jobType, 
-        ApplicationStatus status, 
-        LocalDate dateApplied, 
-        LocalDate followUpDate, 
+        int companyId,
+        String roleTitle,
+        JobType jobType,
+        ApplicationStatus status,
+        LocalDate dateApplied,
+        LocalDate followUpDate,
         String notes){
-            
+
             try{
                 int id = nextApplicationId;
 
@@ -71,12 +71,12 @@ public class ApplicationService {
 
                 JobApplication application = new JobApplication(
                     id,
-                    companyId, 
+                    companyId,
                     roleTitle,
-                    jobType, 
-                    status, 
-                    dateApplied, 
-                    followUpDate, 
+                    jobType,
+                    status,
+                    dateApplied,
+                    followUpDate,
                     notes
                 );
                 this.applications.add(application);
@@ -98,7 +98,7 @@ public class ApplicationService {
     public ArrayList<JobApplication> getApplications(){
         return new ArrayList<>(this.applications);
     }
-    
+
     public Company findCompany(String name){
         Company result = null;
         Iterator<Company> iterator = this.companies.iterator();
@@ -113,7 +113,7 @@ public class ApplicationService {
     }
 
     public Company findCompanyById(int id){
-        
+
         for (Company company : companies){
 
             if( company.getId() == id){
@@ -124,7 +124,7 @@ public class ApplicationService {
     }
 
     public JobApplication findApplicationById(int id){
-        
+
         if ( id < 0 ) {
             throw new IllegalArgumentException("id cannot be negative." );
         }
@@ -202,7 +202,7 @@ public class ApplicationService {
     }
 
     public void updateApplicationStatus(int appId, ApplicationStatus newStatus ){
-        
+
         if ( appId < 0 ){
             throw new IllegalArgumentException("id cannot be negative." );
         }
@@ -235,8 +235,8 @@ public class ApplicationService {
         return result;
     }
 
-    
 
-    
-    
+
+
+
 }
