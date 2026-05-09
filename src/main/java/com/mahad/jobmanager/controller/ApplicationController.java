@@ -61,7 +61,11 @@ public class ApplicationController {
 
 
     }
-    //@DeleteMapping("/{id}")
+    @DeleteMapping("/{id}")
+    private ResponseEntity<Void> deleteApplicationById(@PathVariable @NonNull Integer id){
+        applicationRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
 
 
 }
