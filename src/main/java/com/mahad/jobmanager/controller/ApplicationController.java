@@ -39,12 +39,15 @@ public class ApplicationController {
     }
     //@GetMapping
     @PostMapping
-    private ResponseEntity<Void> createApplication( @RequestBody @NonNull Application application){
+    private ResponseEntity<Application> createApplication( @RequestBody @NonNull Application application){
+
+        if (application.title() == null || application.title().strip().isBlank()) return ResponseEntity.badRequest().build();
+
         Application newApplication = applicationRepository.save(application);
 
-        return ResponseEntity.created(URI.create("/app/" + newApplication.id())).build();
+        return ResponseEntity.created(URI.create("/app/" + newApplication.id())).body(newApplication);
     }
-    
+
     //@PutMapping("/{id}")
     //@DeleteMapping("/{id}")
 
