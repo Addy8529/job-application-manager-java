@@ -33,3 +33,5 @@ gradlew
 
 # vs-code
 settings.json
+*.sql
+expectedCompany.json
