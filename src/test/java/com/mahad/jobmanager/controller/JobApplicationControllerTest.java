@@ -1,9 +1,13 @@
 package com.mahad.jobmanager.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import com.mahad.jobmanager.repository.NewCompany;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -16,10 +20,22 @@ public class JobApplicationControllerTest {
     TestRestTemplate restTemplate;
 
     @Test
-    void controllerReturnsValidCompany(){
+    void shouldAddACompanyIntoRepository(){
+        NewCompany company =  new NewCompany(0, "IBM", "test", "https://ibm.com", 10);
+        ResponseEntity<Void> response = restTemplate.postForEntity("/company", company, Void.class);
 
-        ResponseEntity<String> response = restTemplate.getForEntity("/app/companies/0", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+
+    }
+
+    @Test
+    void shouldReturnACompany(){
+
+        ResponseEntity<String> response = restTemplate.getForEntity("/company/0",String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+
 
     }
 }
