@@ -25,7 +25,7 @@ public class ApplicationControllerTest {
         mvc.perform(get("/app/1"))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-        .andExpect(jsonPath("$.title").value("SE"));
+        .andExpect(jsonPath("$.title").value("Software Developer"));
     }
 
     @Test
@@ -142,6 +142,11 @@ public class ApplicationControllerTest {
         mvc.perform(get(url)).andExpect(status().isNotFound());
     }
 
+    @Test
+    void shouldReturnAllApplications(){
+        
+
+    }
 
 
 
