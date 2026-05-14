@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mahad.jobmanager.models.NewCompany;
 import com.mahad.jobmanager.repository.*;
 
 @RestController
@@ -33,7 +34,7 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}")
-    protected ResponseEntity<NewCompany> findCompanyById( @PathVariable @NonNull Integer id){
+    protected ResponseEntity<NewCompany> findCompanyById( @PathVariable("id") @NonNull Integer id){
 
         Optional<NewCompany> company = companyRepository.findById(id);
         if (company.isEmpty()){
@@ -45,7 +46,7 @@ public class CompanyController {
     @PostMapping
     protected ResponseEntity<Void> addCompany( @RequestBody @NonNull NewCompany company){
         NewCompany newCompany = companyRepository.save(company);
-        Integer id = newCompany.id();
+        Integer id = newCompany.getId();
         if (id != null){
             return ResponseEntity.created(URI.create("/company/" + id)).build();
         }
@@ -53,7 +54,7 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    private ResponseEntity<Void> updateCompany( @PathVariable @NonNull Integer id, @RequestBody @NonNull NewCompany newCompany){
+    private ResponseEntity<Void> updateCompany( @PathVariable("id") @NonNull Integer id, @RequestBody @NonNull NewCompany newCompany){
         if( companyRepository.findById(id).isEmpty()){
 
             return ResponseEntity.notFound().build();
@@ -61,10 +62,10 @@ public class CompanyController {
         }else{
             NewCompany company = new NewCompany(
                 id,
-                newCompany.name(),
-                newCompany.description(),
-                newCompany.url(),
-                newCompany.numberOfEmployees()
+                newCompany.getName(),
+                newCompany.getDescription(),
+                newCompany.getUrl(),
+                newCompany.getNumberOfEmployees()
             );
 
             companyRepository.save(company);
@@ -75,7 +76,7 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{id}")
-    protected ResponseEntity<Void> deleteCompany( @PathVariable @NonNull Integer id ){
+    protected ResponseEntity<Void> deleteCompany( @PathVariable("id") @NonNull Integer id ){
         companyRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
