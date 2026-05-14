@@ -1,154 +1,166 @@
 package com.mahad.jobmanager.controller;
 
+import com.mahad.jobmanager.repository.ApplicationRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.http.MediaType;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import org.springframework.test.web.servlet.ResultMatcher;
 
+import static org.hamcrest.Matchers.hasItems;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ApplicationControllerTest {
+class ApplicationControllerTest {
+
+    private static final String BASE_URL = "/app";
 
     @Autowired
     private MockMvc mvc;
 
-    @Test
-    void shouldReturnValidApplication() throws Exception{
+    @Autowired
+    private ApplicationRepository applicationRepository;
 
-        mvc.perform(get("/app/1"))
-        .andExpect(status().isOk())
-        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-        .andExpect(jsonPath("$.title").value("Software Developer"));
+    @BeforeEach
+    void cleanDatabase() {
+        applicationRepository.deleteAll();
     }
 
     @Test
-    void shouldNotReturnApplicationIfItDoesNotExist() throws Exception{
-        mvc.perform(get("/app/1000"))
-        .andExpect(status().isNotFound());
+    void shouldCreateApplication() throws Exception {
+        mvc.perform(post(BASE_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(applicationJson("Java Developer")))
+                .andExpect(status().isCreated())
+                .andExpect(jsonContent())
+                .andExpect(header().exists("Location"))
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.title").value("Java Developer"));
     }
 
     @Test
-    void shouldCreateApplication() throws Exception{
-        String application = """
+    void shouldReturnApplicationIfItExists() throws Exception {
+        String location = createApplicationAndGetLocation("Software Developer");
+
+        mvc.perform(get(location))
+                .andExpect(status().isOk())
+                .andExpect(jsonContent())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.title").value("Software Developer"));
+    }
+
+    @Test
+    void shouldReturnNotFoundIfApplicationDoesNotExist() throws Exception {
+        mvc.perform(get(BASE_URL + "/99999"))
+                .andExpect(status().isNotFound());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            """
+            { "title": null }
+            """,
+            """
+            { "title": "" }
+            """,
+            """
+            { "title": " " }
+            """
+    })
+    void shouldReturnBadRequestWhenCreatingApplicationWithInvalidTitle(String invalidJson) throws Exception {
+        mvc.perform(post(BASE_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidJson))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldUpdateApplicationIfItExists() throws Exception {
+        String location = createApplicationAndGetLocation("Pentester");
+
+        mvc.perform(put(location)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(applicationJson("Penetration Tester")))
+                .andExpect(status().isNoContent());
+
+        mvc.perform(get(location))
+                .andExpect(status().isOk())
+                .andExpect(jsonContent())
+                .andExpect(jsonPath("$.title").value("Penetration Tester"));
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenUpdatingNonExistingApplication() throws Exception {
+        mvc.perform(put(BASE_URL + "/99999")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(applicationJson("Pentester")))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldDeleteApplicationIfItExists() throws Exception {
+        String location = createApplicationAndGetLocation("Pentester");
+
+        mvc.perform(delete(location))
+                .andExpect(status().isNoContent());
+
+        mvc.perform(get(location))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenDeletingNonExistingApplication() throws Exception {
+        mvc.perform(delete(BASE_URL + "/99999"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void shouldReturnAllApplications() throws Exception {
+        createApplicationAndGetLocation("Java Developer");
+        createApplicationAndGetLocation("Backend Developer");
+
+        mvc.perform(get(BASE_URL))
+                .andExpect(status().isOk())
+                .andExpect(jsonContent())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[*].title").value(hasItems(
+                        "Java Developer",
+                        "Backend Developer"
+                )));
+    }
+
+    private String createApplicationAndGetLocation(String title) throws Exception {
+        MvcResult result = mvc.perform(post(BASE_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(applicationJson(title)))
+                .andExpect(status().isCreated())
+                .andExpect(header().exists("Location"))
+                .andReturn();
+
+        return result.getResponse().getHeader("Location");
+    }
+
+    private String applicationJson(String title) {
+        return """
                 {
-                "id": null,
-                "title": "Java Developer"
+                    "title": "%s"
                 }
-                """;
-        mvc.perform(post("/app").contentType(MediaType.APPLICATION_JSON).content(application))
-        .andExpect(status().isCreated())
-        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-        .andExpect(header().exists("location"))
-        .andExpect(jsonPath("$.title").value("Java Developer"));
+                """.formatted(title);
     }
 
-    @Test
-    void shouldNotCreateApplicationWithInvalidTitle() throws Exception{
-        String app1 = """
-                {
-                "id": null,
-                "title": null
-                }
-                """;
-        String app2 = """
-                {
-                "id": null,
-                "title": ""
-                }
-                """;
-        String app3 = """
-                {
-                "id": null,
-                "title": " "
-                }
-                """;
-        mvc.perform(post("/app").contentType(MediaType.APPLICATION_JSON).content(app1))
-        .andExpect(status().isBadRequest());
-        mvc.perform(post("/app").contentType(MediaType.APPLICATION_JSON).content(app2))
-        .andExpect(status().isBadRequest());
-        mvc.perform(post("/app").contentType(MediaType.APPLICATION_JSON).content(app3))
-        .andExpect(status().isBadRequest());
+    private static ResultMatcher jsonContent() {
+        return content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON);
     }
-
-    @Test
-    void shouldUpdateExistingApplication() throws Exception{
-        String app = """
-                {
-                 "id": null,
-                 "title": "Pentester"
-                 }
-                """;
-        String newApp = """
-                {
-                 "id": null,
-                 "title": "Penetration Tester"
-                 }
-                """;
-        ResultActions response = mvc.perform(post("/app").contentType(MediaType.APPLICATION_JSON).content(app));
-
-        response.andExpect(status().isCreated())
-        .andExpect(header().exists("location"));
-
-        MvcResult result = response.andReturn();
-        String url = result.getResponse().getHeader("location");
-
-        mvc.perform(put(url).contentType(MediaType.APPLICATION_JSON).content(newApp))
-        .andExpect(status().isNoContent());
-
-        mvc.perform(get(url))
-        .andExpect(jsonPath("$.title").value("Penetration Tester"));
-
-
-
-    }
-
-    @Test
-    void shouldNotUpdateNonExistingApplication() throws Exception{
-        String app = """
-                {
-                 "id": null,
-                 "title": "Pentester"
-                 }
-                """;
-        mvc.perform(put("/app/1000").contentType(MediaType.APPLICATION_JSON).content(app))
-        .andExpect(status().isNotFound());
-
-    }
-
-    @Test
-    void shouldDeleteExistingApplication() throws Exception{
-        String app = """
-                {
-                 "id": null,
-                 "title": "Pentester"
-                 }
-                """;
-        MvcResult result = mvc.perform(post("/app")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(app)).andReturn();
-
-        String url = result.getResponse().getHeader("location");
-
-        mvc.perform(delete(url))
-        .andExpect(status().isOk());
-
-        mvc.perform(get(url)).andExpect(status().isNotFound());
-    }
-
-    @Test
-    void shouldReturnAllApplications(){
-        
-
-    }
-
-
-
-
 }
