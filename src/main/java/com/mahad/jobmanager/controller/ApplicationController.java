@@ -7,12 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
 import com.mahad.jobmanager.models.*;
 import com.mahad.jobmanager.repository.ApplicationRepository;
 
@@ -28,7 +23,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<Application> getApplicationById(@PathVariable Integer id){
+    private ResponseEntity<Application> getApplicationById(@PathVariable("id") Integer id){
         Optional<Application> application = applicationRepository.findById(id);
 
         if ( application.isEmpty()){
@@ -37,23 +32,30 @@ public class ApplicationController {
 
         return ResponseEntity.ok(application.get());
     }
-    //@GetMapping
+
+    @GetMapping
+    private ResponseEntity<Iterable<Application>> getAllApplications(){
+
+        return ResponseEntity.ok(applicationRepository.findAll());
+    }
+
+
     @PostMapping
     private ResponseEntity<Application> createApplication( @RequestBody @NonNull Application application){
 
-        if (application.title() == null || application.title().strip().isBlank()) return ResponseEntity.badRequest().build();
+        if (application.getTitle() == null || application.getTitle().strip().isBlank()) return ResponseEntity.badRequest().build();
 
         Application newApplication = applicationRepository.save(application);
 
-        return ResponseEntity.created(URI.create("/app/" + newApplication.id())).body(newApplication);
+        return ResponseEntity.created(URI.create("/app/" + newApplication.getId())).body(newApplication);
     }
 
     @PutMapping("/{id}")
     private ResponseEntity<Void> updateApplicationById(
-        @PathVariable @NonNull Integer id,
+        @PathVariable("id") @NonNull Integer id,
         @RequestBody Application updatedApplication){
             if ( applicationRepository.findById(id).isPresent()){
-                applicationRepository.save(new Application(id, updatedApplication.title()));
+                applicationRepository.save(new Application(id, updatedApplication.getTitle()));
                 return ResponseEntity.noContent().build();
             }else{
                 return ResponseEntity.notFound().build();
@@ -62,9 +64,9 @@ public class ApplicationController {
 
     }
     @DeleteMapping("/{id}")
-    private ResponseEntity<Void> deleteApplicationById(@PathVariable @NonNull Integer id){
+    private ResponseEntity<Void> deleteApplicationById(@PathVariable("id") @NonNull Integer id){
         applicationRepository.deleteById(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
 
