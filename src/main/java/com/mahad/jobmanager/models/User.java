@@ -4,6 +4,7 @@ import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name= "app_user")
 public class User {
 
     @Id
