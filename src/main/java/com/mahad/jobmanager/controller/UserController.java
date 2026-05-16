@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mahad.jobmanager.models.User;
 import com.mahad.jobmanager.repository.UserRepository;
 
-import io.micrometer.common.lang.NonNull;
 
 @RestController
 @RequestMapping("/user")
@@ -39,7 +38,7 @@ public class UserController {
         Optional<User> user = repository.findById(id);
 
         if (user.isEmpty()){
-            ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(user.get());
         }
