@@ -30,6 +30,24 @@ public class UserTest {
     }
 
     @Test
+    void constructorWithoutIdLeavesIdNull() {
+        User newUser = new User("newUser", "newPassword");
+
+        assertThat(newUser.getId()).isNull();
+        assertThat(newUser.getName()).isEqualTo("newUser");
+        assertThat(newUser.getPassword()).isEqualTo("newPassword");
+    }
+
+    @Test
+    void noArgsConstructorSupportsJpaInstantiation() {
+        User newUser = new User();
+
+        assertThat(newUser.getId()).isNull();
+        assertThat(newUser.getName()).isNull();
+        assertThat(newUser.getPassword()).isNull();
+    }
+
+    @Test
     void testSetName() {
         this.user.setName("newName");
         assertThat(this.user.getName()).isEqualTo("newName");
