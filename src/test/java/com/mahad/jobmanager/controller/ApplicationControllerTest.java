@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
 
 import static org.hamcrest.Matchers.hasItems;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -22,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithMockUser
 class ApplicationControllerTest {
 
     private static final String BASE_URL = "/app";
@@ -39,7 +42,7 @@ class ApplicationControllerTest {
 
     @Test
     void shouldCreateApplication() throws Exception {
-        mvc.perform(post(BASE_URL)
+        mvc.perform(post(BASE_URL).with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(applicationJson("Java Developer")))
                 .andExpect(status().isCreated())
@@ -79,7 +82,7 @@ class ApplicationControllerTest {
             """
     })
     void shouldReturnBadRequestWhenCreatingApplicationWithInvalidTitle(String invalidJson) throws Exception {
-        mvc.perform(post(BASE_URL)
+        mvc.perform(post(BASE_URL).with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidJson))
                 .andExpect(status().isBadRequest());
@@ -89,7 +92,7 @@ class ApplicationControllerTest {
     void shouldUpdateApplicationIfItExists() throws Exception {
         String location = createApplicationAndGetLocation("Pentester");
 
-        mvc.perform(put(location)
+        mvc.perform(put(location).with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(applicationJson("Penetration Tester")))
                 .andExpect(status().isNoContent());
@@ -102,7 +105,7 @@ class ApplicationControllerTest {
 
     @Test
     void shouldReturnNotFoundWhenUpdatingNonExistingApplication() throws Exception {
-        mvc.perform(put(BASE_URL + "/99999")
+        mvc.perform(put(BASE_URL + "/99999").with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(applicationJson("Pentester")))
                 .andExpect(status().isNotFound());
@@ -112,7 +115,7 @@ class ApplicationControllerTest {
     void shouldDeleteApplicationIfItExists() throws Exception {
         String location = createApplicationAndGetLocation("Pentester");
 
-        mvc.perform(delete(location))
+        mvc.perform(delete(location).with(csrf()))
                 .andExpect(status().isNoContent());
 
         mvc.perform(get(location))
@@ -121,8 +124,17 @@ class ApplicationControllerTest {
 
     @Test
     void shouldReturnNotFoundWhenDeletingNonExistingApplication() throws Exception {
-        mvc.perform(delete(BASE_URL + "/99999"))
+        mvc.perform(delete(BASE_URL + "/99999").with(csrf()))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void shouldReturnEmptyArrayWhenNoApplicationsExist() throws Exception {
+        mvc.perform(get(BASE_URL))
+                .andExpect(status().isOk())
+                .andExpect(jsonContent())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(0));
     }
 
     @Test
@@ -142,7 +154,7 @@ class ApplicationControllerTest {
     }
 
     private String createApplicationAndGetLocation(String title) throws Exception {
-        MvcResult result = mvc.perform(post(BASE_URL)
+        MvcResult result = mvc.perform(post(BASE_URL).with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(applicationJson(title)))
                 .andExpect(status().isCreated())
